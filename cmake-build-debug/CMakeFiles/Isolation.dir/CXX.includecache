@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.cpp
+Isolation.h
+/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.h
+
+/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.h
+iostream
+-
+cstdlib
+-
+vector
+-
+string
+-
+
+/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/main.cpp
+iostream
+-
+cstdlib
+-
+Isolation.h
+/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.h
+
