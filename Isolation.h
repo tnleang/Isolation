@@ -15,6 +15,13 @@ using namespace std;
 
 const int BOARD_SIZE = 8;
 
+
+//void _swapChar ( char& a, char& b) {
+//    char temp = a;
+//    a = b;
+//    b = temp;
+//}
+
 class Isolation {
 public:
     Isolation();
@@ -27,14 +34,17 @@ public:
     string getcurrentX() const;
     string getcurrentO() const;
     void computerMove();
+    bool computeMove(string movingPosition); // testing function
     bool opponentMove(string movingPosition);
-
+    bool isWin(const char& player);
+    inline bool isComputerPlay() const {return playing == computer;}
+    char whoIsPlaying() const {return playing;}
 
 private:
     bool isValidMove(const char& player, pair<int,int> movePosition) const;
     inline bool outOfBound(pair<int,int> position) const;
     inline bool isUsed(pair<int,int> position) const;
-    bool isWin(const char& player);
+
     int utility(const char& player);
     vector<pair<int,int>> getAllPossitbleMoves(const char& player);
 

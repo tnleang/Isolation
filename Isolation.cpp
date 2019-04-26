@@ -37,14 +37,27 @@ void Isolation::initialize() {
 
 void Isolation::computerMove() {
 
-    pair<int,int> move = alphaBetaSreach(board);
-    makeMove(computer,move.first,move.second);
+//    pair<int,int> move = alphaBetaSreach(board);
+//    makeMove(computer,move.first,move.second);
+
+}
+
+bool Isolation::computeMove(string movingPosition) {
+    pair<int,int> move = pair<int,int>(movingPosition[0] - 65, movingPosition[1] - 49);
+    cout << move.first <<" , " << move.second << endl;
+    if ( isValidMove(computer, move) ) {
+        makeMove(computer, move.first, move.second);
+        playerC.emplace_back(movingPosition);
+        return true;
+    }
+    return false;
 }
 
 bool Isolation::opponentMove(string movingPosition) {
     // need to handle the user input
     // tokenize the moving position format
     pair<int,int> move = pair<int,int>(movingPosition[0] - 65, movingPosition[1] - 49);
+    cout << move.first <<" , " << move.second << endl;
     if ( isValidMove(opponent, move) ) {
         makeMove(opponent, move.first, move.second);
         playerO.emplace_back(movingPosition);
@@ -120,32 +133,34 @@ int Isolation::utility(const char &player) {
         return 0;
 }
 
-bool Isolation::makeMove(const char& player, int row, int col) {
+bool Isolation::makeMove(const char& player, int row, int col) {   // assume it is valid
     /*
      * update move on the board when player make move
      * return true if the move is made
      *        false otherwise (not a valid move)
      */
-    if (!isValidMove(player, pair<int,int>(row - 1,col - 1)))
+    if (!isValidMove(player, pair<int,int>(row ,col)))
         return false;
     else {
         if (player == 'X') {
             board[currentX.first][currentX.second] = '#';
-            currentX.first = row - 1;
-            currentX.second = col - 1;
+            currentX.first = row;
+            currentX.second = col;
             board[currentX.first][currentX.second] = 'X';
         }
         else {
             board[currentO.first][currentO.second] = '#';
-            currentO.first = row - 1;
-            currentO.second = col - 1;
+            currentO.first = row;
+            currentO.second = col;
             board[currentO.first][currentO.second] = 'O';
         }
     }
+    swap(playing, waiting);
     return true;
 }
 
 bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) const {
+    const bool DEBUG = false;
     /*
      *  check for valid move
      *      should return false if there is an '#' along the path
@@ -158,18 +173,22 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
         return false;
     int row = player == 'X' ? currentX.first : currentO.first;
     int col = player == 'X' ? currentX.second : currentO.second;
-    cout << "I am " << player << " at "<<row<< "," << col<< endl;
+    if (DEBUG)
+        cout << "I am " << player << " at "<<row<< "," << col<< endl;
     int rowDis = abs(row - movePosition.first);
     int colDis = abs(col - movePosition.second);
-    cout << "I am moving to" <<movePosition.first<< "," << movePosition.second<< endl;
+    if (DEBUG)
+        cout << "I am moving to" <<movePosition.first<< "," << movePosition.second<< endl;
     if ( rowDis == 0 && colDis == 0) { // same spot
-        cout << "INVALID MOVE (moving to the same spot)" << endl;
+        if (DEBUG)
+            cout << "INVALID MOVE (moving to the same spot)" << endl;
         return false;
     }
     else if (row > movePosition.first && col == movePosition.second)  { // TOP
         for ( int i=row - 1; i >= movePosition.first; --i) {
             if (isUsed(pair<int,int>(i,col))) {
-                cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                if (DEBUG)
+                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                 return false;
             }
         }
@@ -177,7 +196,8 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
     else if (row == movePosition.first && col < movePosition.second)  { // RIGHT
         for ( int i=col + 1; i <= movePosition.second; ++i) {
             if (isUsed(pair<int,int>(row,i))) {
-                cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                if (DEBUG)
+                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                 return false;
             }
         }
@@ -185,7 +205,8 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
     else if (row < movePosition.first && col == movePosition.second)  { // DOWN
         for ( int i=row + 1; i <= movePosition.first; ++i) {
             if (isUsed(pair<int,int>(i,col))) {
-                cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                if (DEBUG)
+                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                 return false;
             }
         }
@@ -193,47 +214,53 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
     else if (row == movePosition.first && col > movePosition.second)  { // LEFT
         for ( int i=col - 1; i >= movePosition.second; --i) {
             if (isUsed(pair<int,int>(row,i))) {
-                cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                if (DEBUG)
+                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                 return false;
             }
         }
     }
     else if (rowDis == colDis) { // proper diagonal
         if (row > movePosition.first && col < movePosition.second) { // TOP RIGHT
-            for ( int i= 1; i < rowDis; ++i) {
+            for ( int i= 0; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row-i,col+i))) {
-                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                    if (DEBUG)
+                        cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                     return false;
                 }
             }
         }
-        else if (row > movePosition.first && col < movePosition.second) { // DOWN RIGHT
-            for ( int i= 1; i < rowDis; ++i) {
+        else if (row > movePosition.first && col < movePosition.second) { // DOWN RIGHT  //bug
+            for ( int i= 0; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row+i,col+i))) {
-                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                    if (DEBUG)
+                        cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                     return false;
                 }
             }
         }
         else if (row > movePosition.first && col < movePosition.second) { // DOWN LEFT
-            for ( int i= 1; i < rowDis; ++i) {
+            for ( int i= 0; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row+i,col-i))) {
-                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                    if (DEBUG)
+                        cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                     return false;
                 }
             }
         }
         else if (row > movePosition.first && col < movePosition.second) { // TOP LEFT
-            for ( int i= 1; i < rowDis; ++i) {
+            for ( int i= 0; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row-i,col-i))) {
-                    cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
+                    if (DEBUG)
+                        cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
                     return false;
                 }
             }
         }
     }
     else {
-        cout << "NOT A VALID MOVE (DIAGONAL ROW & COL are not the same)" << endl;
+        if (DEBUG)
+            cout << "NOT A VALID MOVE (DIAGONAL ROW & COL are not the same)" << endl;
         return false;
     }
     return true;  // passing all check!!
@@ -264,6 +291,7 @@ bool Isolation::isWin(const char& player) {
 }
 
 vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I already know where i am
+    const bool DEBUG = true;
     /*
      * get all posible moves from a player
      *      all direction:  8 direction ways
@@ -278,57 +306,81 @@ vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I
     int col = player == 'X' ? currentX.second : currentO.second;
     for ( int i = 1; row - i >= 0; ++i) {  // moving up
         pair<int,int> move = pair<int,int>(row - i, col);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " (moving up)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row - i >= 0; ++i) {  // moving up right
+    for ( int i = 1; row - i >= 0 && col + i < BOARD_SIZE; ++i) {  // moving up right
         pair<int,int> move = pair<int,int>(row - i, col + i);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " at " << move.first << "," << move.second << " (moving up right)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row - i >= 0; ++i) {  // moving right
+    for ( int i = 1; col + i < BOARD_SIZE; ++i) {  // moving right
         pair<int,int> move = pair<int,int>(row, col + i);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " (moving right)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row - i >= 0; ++i) {  // moving down right
+    for ( int i = 1; row + i < BOARD_SIZE && col + i < BOARD_SIZE; ++i) {  // moving down right
         pair<int,int> move = pair<int,int>(row + i, col + i);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " (moving down right)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row - i >= 0; ++i) {  // moving down
+    for ( int i = 1; row + i < BOARD_SIZE; ++i) {  // moving down
         pair<int,int> move = pair<int,int>(row + i, col);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " (moving down)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row - i >= 0; ++i) {  // moving down left
+    for ( int i = 1; row + i < BOARD_SIZE && col - i >= 0; ++i) {  // moving down left
         pair<int,int> move = pair<int,int>(row + i, col - i);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " (moving down left)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row - i >= 0; ++i) {  // moving left
+    for ( int i = 1; col - i >= 0; ++i) {  // moving left
         pair<int,int> move = pair<int,int>(row, col - i);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " (moving left)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row - i >= 0; ++i) {  // moving up left
+    for ( int i = 1; row - i >= 0 && col - i >= 0; ++i) {  // moving up left
         pair<int,int> move = pair<int,int>(row - i, col - i);
-        if (isValidMove(player,move))
+        if (isValidMove(player,move)) {
             successors.push_back(move);
+            if (DEBUG)
+                cout << "I pushing "<< player << " (moving up left)"<< endl;
+        }
         else  // hitting invalid move
             break;
     }
@@ -345,8 +397,22 @@ void Isolation::display() const {
             for ( j = 0; j < BOARD_SIZE; ++j) {
                 cout << board[i][j] << " ";
             }
-            cout << endl;
         }
+        else {
+            cout << "                       ";
+        }
+
+        if (i < playerC.size()) {
+            cout << "         " << playerC[i] << "       ";
+        }
+        else {
+            cout << "                     ";
+        }
+
+        if (i < playerO.size()) {
+            cout << playerO[i];
+        }
+        cout << endl;
         ++i;
     }
 }
