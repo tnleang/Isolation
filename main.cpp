@@ -34,11 +34,11 @@ int main() {
         }
         cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
         cout << game << endl;
-        if (game.isWin(cur))
+        if (game.isWin(cur)){
+            cout << cur << " is the winner!" << endl;
             play = false;
-
+        }
     }
-
 
 
 //    game.opponentMove("A7");

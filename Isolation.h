@@ -42,6 +42,7 @@ public:
 
 private:
     bool isValidMove(const char& player, pair<int,int> movePosition) const;
+    bool checkLosingCondition(const char& player) const;
     inline bool outOfBound(pair<int,int> position) const;
     inline bool isUsed(pair<int,int> position) const;
 

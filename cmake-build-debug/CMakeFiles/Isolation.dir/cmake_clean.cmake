@@ -1,8 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Isolation.dir/main.cpp.o"
-  "CMakeFiles/Isolation.dir/Isolation.cpp.o"
+  "CMakeFiles/Isolation.dir/main.cpp.obj"
+  "CMakeFiles/Isolation.dir/Isolation.cpp.obj"
   "Isolation.pdb"
-  "Isolation"
+  "Isolation.exe"
+  "Isolation.exe.manifest"
+  "libIsolation.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

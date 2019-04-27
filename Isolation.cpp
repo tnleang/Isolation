@@ -287,11 +287,25 @@ bool Isolation::isWin(const char& player) {
     /*
      * return true if the player is at winning situation
      */
-    return player == waiting && getAllPossitbleMoves(playing).empty();
+
+    return player == waiting && checkLosingCondition(playing);
+}
+
+bool Isolation::checkLosingCondition(const char& player) const{
+    int x_pos = player == 'X' ? currentX.first : currentO.first;
+    int y_pos = player == 'X' ? currentX.second : currentO.second;
+    for(int dx = (x_pos > 0 ? -1 : 0); dx <= (x_pos < BOARD_SIZE-1 ? 1 : 0); ++dx){
+        for (int dy = (y_pos > 0 ? -1 : 0); dy <= (y_pos < BOARD_SIZE-1 ? 1 : 0) ; ++dy) {
+            if ((dx != 0 || dy != 0) && !isUsed(pair<int, int>(x_pos + dx, y_pos + dy))) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I already know where i am
-    const bool DEBUG = true;
+    const bool DEBUG = false;
     /*
      * get all posible moves from a player
      *      all direction:  8 direction ways

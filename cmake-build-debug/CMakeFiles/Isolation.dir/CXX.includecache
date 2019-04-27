@@ -6,11 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.cpp
-Isolation.h
-/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.h
-
-/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.h
+D:/Users/Gippy/Downloads/spring2019/ai/project3/Isolation/Isolation.h
 iostream
 -
 cstdlib
@@ -22,11 +18,11 @@ string
 limits
 -
 
-/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/main.cpp
+D:/Users/Gippy/Downloads/spring2019/ai/project3/Isolation/main.cpp
 iostream
 -
 cstdlib
 -
 Isolation.h
-/Users/titichotnuntapramote/Dropbox/CPP_courses/CS/CS4200/HW/Isolation/Isolation.h
+D:/Users/Gippy/Downloads/spring2019/ai/project3/Isolation/Isolation.h
 
