@@ -9,3 +9,5 @@ TODO:
 * Test iterative deepening alpha beta function
 
   * Most likely test it with a naive heuristic just to make sure that it works correctly
+ 
+ * Fix alphabeta function to get position of opponent and getAllLegalMoves for that opponent when max_player == false.
