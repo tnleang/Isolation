@@ -13,6 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="16b7669a-ebd1-47c3-813f-b717a0322aca" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/Isolation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Isolation.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Isolation.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Isolation.dir/CXX.includecache" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -56,8 +57,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Isolation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="458" column="50" selection-start-line="458" selection-start-column="50" selection-end-line="458" selection-end-column="50" />
+            <state relative-caret-position="102">
+              <caret line="448" column="51" selection-start-line="448" selection-start-column="51" selection-end-line="448" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -173,12 +174,12 @@
       <option name="presentableId" value="Default" />
       <updated>1556132071817</updated>
       <workItem from="1556132073499" duration="25352000" />
-      <workItem from="1556401870374" duration="21435000" />
+      <workItem from="1556401870374" duration="21809000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46787000" />
+    <option name="totallyTimeSpent" value="47161000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -242,8 +243,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Isolation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="458" column="50" selection-start-line="458" selection-start-column="50" selection-end-line="458" selection-end-column="50" />
+        <state relative-caret-position="102">
+          <caret line="448" column="51" selection-start-line="448" selection-start-column="51" selection-end-line="448" selection-end-column="51" />
         </state>
       </provider>
     </entry>

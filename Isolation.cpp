@@ -446,7 +446,7 @@ currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], 
     int highest_score = INF;
     pair<int, int> best_move = pair<int, int>(-1, -1);
     currentMovedNode node;
-    if(depth == 1){
+    if(depth == 1){ // Terminal State aka leaf node
         if(max_player){
             node = maxBaseDepthValue(allLegalMoves, alpha, beta, highest_score, best_move);
         }else{
