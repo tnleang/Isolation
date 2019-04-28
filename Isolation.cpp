@@ -411,6 +411,11 @@ ostream& operator<<(ostream &out, const Isolation &x) {
     return out;
 }
 
+/*
+ * Starts the alphaBetaSearch with current board and the computer's current position
+ * It is an iterative deepening search, so it starts at depth 1 then if a score is not INF or -INF
+ * then continue to search with depth + 1
+ */
 currentMovedNode Isolation::iterativeDeepSearch(){
     int depth = 1;
     int alpha = -INF;
@@ -429,6 +434,7 @@ currentMovedNode Isolation::iterativeDeepSearch(){
 
 /*
  * TODO:
+ *  Handle timing
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  *  The 'playing' value should have the updated position of the player after applying a move on the board.
  */
@@ -448,9 +454,9 @@ currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], 
     currentMovedNode node;
     if(depth == 1){ // Terminal State aka leaf node
         if(max_player){
-            node = maxBaseDepthValue(allLegalMoves, alpha, beta, highest_score, best_move);
+            node = maxBaseDepthValue(allLegalMoves, board, alpha, beta, highest_score, best_move);
         }else{
-            node = minBaseDepthValue(allLegalMoves, alpha, beta, lowest_score, best_move);
+            node = minBaseDepthValue(allLegalMoves, board, alpha, beta, lowest_score, best_move);
         }
     }else{
         if(max_player){
@@ -462,17 +468,17 @@ currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], 
     return node;
 }
 
-int Isolation::getHeuristicScore(const pair<int, int> &move) {
+int Isolation::getHeuristicScore(char board[BOARD_SIZE][BOARD_SIZE]) {
     return 0;
 }
 
-currentMovedNode Isolation::maxBaseDepthValue(vector<pair<int, int>> &legalMoves, const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move){
+currentMovedNode Isolation::maxBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move){
     int score;
     int current_highest_score;
     pair<int, int> current_best_move;
     currentMovedNode node;
     for(pair<int, int> move : legalMoves){
-        score = getHeuristicScore(move);
+        score = getHeuristicScore(board);
 
         if(score >= beta){
             node.score = score;
@@ -490,13 +496,13 @@ currentMovedNode Isolation::maxBaseDepthValue(vector<pair<int, int>> &legalMoves
     return node;
 }
 
-currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves, const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move) {
+currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move) {
     int score;
     int current_lowest_score;
     pair<int, int> current_best_move;
     currentMovedNode node;
     for (pair<int, int> move : legalMoves) {
-        score = getHeuristicScore(move);
+        score = getHeuristicScore(board);
 
         if (score <= beta) {
             node.score = score;

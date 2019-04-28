@@ -12,8 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="16b7669a-ebd1-47c3-813f-b717a0322aca" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Isolation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Isolation.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Isolation.h" beforeDir="false" afterPath="$PROJECT_DIR$/Isolation.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -57,8 +57,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Isolation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="557" column="73" selection-start-line="557" selection-start-column="73" selection-end-line="557" selection-end-column="73" />
+            <state relative-caret-position="238">
+              <caret line="480" column="40" lean-forward="true" selection-start-line="480" selection-start-column="40" selection-end-line="480" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -66,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Isolation.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="82" column="78" lean-forward="true" selection-start-line="82" selection-start-column="78" selection-end-line="82" selection-end-column="78" />
+            <state relative-caret-position="207">
+              <caret line="76" column="60" selection-start-line="76" selection-start-column="60" selection-end-line="76" selection-end-column="60" />
               <folding>
                 <element signature="e#116#135#0" expanded="true" />
               </folding>
@@ -97,8 +97,8 @@
       <list>
         <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/Isolation.h" />
         <option value="$PROJECT_DIR$/Isolation.cpp" />
+        <option value="$PROJECT_DIR$/Isolation.h" />
       </list>
     </option>
   </component>
@@ -174,12 +174,12 @@
       <option name="presentableId" value="Default" />
       <updated>1556132071817</updated>
       <workItem from="1556132073499" duration="25352000" />
-      <workItem from="1556401870374" duration="21961000" />
+      <workItem from="1556401870374" duration="22233000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47313000" />
+    <option name="totallyTimeSpent" value="47585000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -233,8 +233,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Isolation.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="82" column="78" lean-forward="true" selection-start-line="82" selection-start-column="78" selection-end-line="82" selection-end-column="78" />
+        <state relative-caret-position="207">
+          <caret line="76" column="60" selection-start-line="76" selection-start-column="60" selection-end-line="76" selection-end-column="60" />
           <folding>
             <element signature="e#116#135#0" expanded="true" />
           </folding>
@@ -243,8 +243,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Isolation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="557" column="73" selection-start-line="557" selection-start-column="73" selection-end-line="557" selection-end-column="73" />
+        <state relative-caret-position="238">
+          <caret line="480" column="40" lean-forward="true" selection-start-line="480" selection-start-column="40" selection-end-line="480" selection-end-column="40" />
         </state>
       </provider>
     </entry>
