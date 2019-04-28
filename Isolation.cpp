@@ -422,9 +422,10 @@ currentMovedNode Isolation::iterativeDeepSearch(){
 /*
  * TODO:
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
+ *  The 'playing' value should have the updated position of the player after applying a move on the board.
  */
 currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE],const int &depth, int &alpha, int &beta, bool max_player) {
-    vector<pair<int, int>> allLegalMoves = getAllPossibleMoves(playing);
+    vector<pair<int, int>> allLegalMoves = getAllPossibleMoves(playing); // The current playing player must have the updated position
 
     if(allLegalMoves.empty()){
         currentMovedNode node;
@@ -509,13 +510,12 @@ currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves
  * TODO:
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  */
-currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, const int &depth, int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move){
-    int newBeta = beta;
+currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, const int &depth, int &alpha, int &beta, const int &highest_score, const pair<int, int> &best_move){
     int current_highest_score;
     pair<int, int> current_best_move;
     currentMovedNode node;
     for(pair<int, int> move : legalMoves){
-        node = alphaBetaSearch(board, depth-1, alpha, newBeta, false); // board should actually be the board of the move applied
+        node = alphaBetaSearch(board, depth-1, alpha, beta, false); // board should actually be the board of the move applied
 
         if(node.score >= beta){
             return node;
@@ -536,13 +536,12 @@ currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, const i
  * TODO:
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  */
-currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, const int &depth, const int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move){
-    int newAlpha = alpha;
+currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, const int &depth, int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move){
     int current_lowest_score;
     pair<int, int> current_best_move;
     currentMovedNode node;
     for(pair<int, int> move : legalMoves){
-        node = alphaBetaSearch(board, depth-1, newAlpha, beta, false); // board should actually be the board of the move applied
+        node = alphaBetaSearch(board, depth-1, alpha, beta, false); // board should actually be the board of the move applied
 
         if(node.score <= alpha){
             return node;
