@@ -454,9 +454,9 @@ currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], 
         }
     }else{
         if(max_player){
-            node = maxValue(allLegalMoves, player_pos, depth, alpha, beta, highest_score, best_move);
+            node = maxValue(allLegalMoves, board, player_pos, depth, alpha, beta, highest_score, best_move);
         }else{
-            node = minValue(allLegalMoves, player_pos, depth, alpha, beta, lowest_score, best_move);
+            node = minValue(allLegalMoves, board, player_pos, depth, alpha, beta, lowest_score, best_move);
         }
     }
     return node;
