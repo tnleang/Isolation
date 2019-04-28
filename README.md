@@ -7,4 +7,5 @@ Algorithm is based off of iterative deepening search with alpha-beta pruning for
 TODO:
 * Choose a good heuristic function
 * Test iterative deepening alpha beta function
+
 ...Most likely test it with a niave heuristic just to make sure that it works correctly
