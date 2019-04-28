@@ -66,46 +66,46 @@ bool Isolation::opponentMove(string movingPosition) {
     return false;
 }
 
-pair<int,int> Isolation::alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]){
-    /*
-     * input: state -- current board in the game
-     * value <- maxValue(board, -inf, inf)
-     * return the action in Successors(state) with value
-     */
-    int alpha = numeric_limits<int>::min();
-    int beta = numeric_limits<int>::max();
-}
-
-int Isolation::maxValue (char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta) {
-    /*
-     * input: state, current state in game
-     *          alpha, the value of the best alternative for MAX along the path to state
-     *          beta, the value of the best alternative for MIN along the path to state
-     *  if Terminal-test(state) then return Utility(state)
-     *  value <- -inf
-     *  for s in succerssors(state) do
-     *      value <- MAX(value, min-value(s,alpha, beta))
-     *      if value >= beta then return value
-     *      alpha <- MAX(alpha, value)
-     *  return value
-     */
-
-}
-
-int Isolation::minValue(char board[BOARD_SIZE][BOARD_SIZE], int &alpha, int &beta) {
-    /*
-     * input: state, current state in game
-     *          alpha, the value of the best alternative for MAX along the path to state
-     *          beta, the value of the best alternative for MIN along the path to state
-     *  if Terminal-test(state) then return Utility(state)
-     *  value <- -inf
-     *  for s in succerssors(state) do
-     *      value <- MIN(value, max-value(s,alpha, beta))
-     *      if value <= alpha then return value
-     *      alpha <- MIN(beta, value)
-     *  return value
-     */
-}
+//pair<int,int> Isolation::alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]){
+//    /*
+//     * input: state -- current board in the game
+//     * value <- maxValue(board, -inf, inf)
+//     * return the action in Successors(state) with value
+//     */
+//    int alpha = numeric_limits<int>::min();
+//    int beta = numeric_limits<int>::max();
+//}
+//
+//int Isolation::maxValue (char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta) {
+//    /*
+//     * input: state, current state in game
+//     *          alpha, the value of the best alternative for MAX along the path to state
+//     *          beta, the value of the best alternative for MIN along the path to state
+//     *  if Terminal-test(state) then return Utility(state)
+//     *  value <- -inf
+//     *  for s in succerssors(state) do
+//     *      value <- MAX(value, min-value(s,alpha, beta))
+//     *      if value >= beta then return value
+//     *      alpha <- MAX(alpha, value)
+//     *  return value
+//     */
+//
+//}
+//
+//int Isolation::minValue(char board[BOARD_SIZE][BOARD_SIZE], int &alpha, int &beta) {
+//    /*
+//     * input: state, current state in game
+//     *          alpha, the value of the best alternative for MAX along the path to state
+//     *          beta, the value of the best alternative for MIN along the path to state
+//     *  if Terminal-test(state) then return Utility(state)
+//     *  value <- -inf
+//     *  for s in succerssors(state) do
+//     *      value <- MIN(value, max-value(s,alpha, beta))
+//     *      if value <= alpha then return value
+//     *      alpha <- MIN(beta, value)
+//     *  return value
+//     */
+//}
 
 string Isolation::getcurrentX() const {
     string position = "";
@@ -127,7 +127,7 @@ int Isolation::utility(const char &player) {
      *         -1 if player not win
      *         0 otherwise (inconclusive)
      */
-    if ( getAllPossitbleMoves(playing).empty() )
+    if (getAllPossibleMoves(playing).empty() )
         return player == playing ? -1 : 1;
     else
         return 0;
@@ -304,7 +304,24 @@ bool Isolation::checkLosingCondition(const char& player) const{
     return true;
 }
 
-vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I already know where i am
+void Isolation::getAllLegalMovesVertHori(vector<pair<int, int>> &list, int player_x, int player_y, bool dirUpOrLeft, bool horizontal) {
+    pair<int, int> move;
+    (horizontal ? move.first : move.second) = (horizontal ? player_x: player_y);
+    int current_selected_pos = (horizontal ? player_y: player_x);
+    int *selected_pair_var = &(horizontal ? move.second : move.first);
+    bool notFinished = true;
+    int direction = dirUpOrLeft ? -1 : 1;
+    for (int i = 1; (dirUpOrLeft ? current_selected_pos - i >= 0 : current_selected_pos + i > BOARD_SIZE) && notFinished; ++i) {
+        *selected_pair_var = current_selected_pos + (i*direction);
+        if(!isUsed(move)){
+            list.push_back(move);
+        }else{
+            notFinished = false;
+        }
+    }
+}
+
+vector<pair<int,int>> Isolation::getAllPossibleMoves(const char& player) { // I already know where i am
     const bool DEBUG = false;
     /*
      * get all posible moves from a player
@@ -318,16 +335,17 @@ vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I
     vector<pair<int,int>> successors;
     int row = player == 'X' ? currentX.first : currentO.first;
     int col = player == 'X' ? currentX.second : currentO.second;
-    for ( int i = 1; row - i >= 0; ++i) {  // moving up
-        pair<int,int> move = pair<int,int>(row - i, col);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " (moving up)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
+    getAllLegalMovesVertHori(successors, row, col, true, false); // moving up
+//    for ( int i = 1; row - i >= 0; ++i) {  // moving up
+//        pair<int,int> move = pair<int,int>(row - i, col);
+//        if (isValidMove(player,move)) {
+//            successors.push_back(move);
+//            if (DEBUG)
+//                cout << "I pushing "<< player << " (moving up)"<< endl;
+//        }
+//        else  // hitting invalid move
+//            break;
+//    }
     for ( int i = 1; row - i >= 0 && col + i < BOARD_SIZE; ++i) {  // moving up right
         pair<int,int> move = pair<int,int>(row - i, col + i);
         if (isValidMove(player,move)) {
@@ -338,16 +356,18 @@ vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; col + i < BOARD_SIZE; ++i) {  // moving right
-        pair<int,int> move = pair<int,int>(row, col + i);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " (moving right)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
+
+    getAllLegalMovesVertHori(successors, row, col, false, true); // moving right
+//    for ( int i = 1; col + i < BOARD_SIZE; ++i) {  // moving right
+//        pair<int,int> move = pair<int,int>(row, col + i);
+//        if (isValidMove(player,move)) {
+//            successors.push_back(move);
+//            if (DEBUG)
+//                cout << "I pushing "<< player << " (moving right)"<< endl;
+//        }
+//        else  // hitting invalid move
+//            break;
+//    }
     for ( int i = 1; row + i < BOARD_SIZE && col + i < BOARD_SIZE; ++i) {  // moving down right
         pair<int,int> move = pair<int,int>(row + i, col + i);
         if (isValidMove(player,move)) {
@@ -358,16 +378,18 @@ vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; row + i < BOARD_SIZE; ++i) {  // moving down
-        pair<int,int> move = pair<int,int>(row + i, col);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " (moving down)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
+    getAllLegalMovesVertHori(successors, row, col, false, false); // moving down
+
+//    for ( int i = 1; row + i < BOARD_SIZE; ++i) {  // moving down
+//        pair<int,int> move = pair<int,int>(row + i, col);
+//        if (isValidMove(player,move)) {
+//            successors.push_back(move);
+//            if (DEBUG)
+//                cout << "I pushing "<< player << " (moving down)"<< endl;
+//        }
+//        else  // hitting invalid move
+//            break;
+//    }
     for ( int i = 1; row + i < BOARD_SIZE && col - i >= 0; ++i) {  // moving down left
         pair<int,int> move = pair<int,int>(row + i, col - i);
         if (isValidMove(player,move)) {
@@ -378,16 +400,19 @@ vector<pair<int,int>> Isolation::getAllPossitbleMoves(const char& player) { // I
         else  // hitting invalid move
             break;
     }
-    for ( int i = 1; col - i >= 0; ++i) {  // moving left
-        pair<int,int> move = pair<int,int>(row, col - i);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " (moving left)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
+
+    getAllLegalMovesVertHori(successors, row, col, true, true); // moving left
+
+//    for ( int i = 1; col - i >= 0; ++i) {  // moving left
+//        pair<int,int> move = pair<int,int>(row, col - i);
+//        if (isValidMove(player,move)) {
+//            successors.push_back(move);
+//            if (DEBUG)
+//                cout << "I pushing "<< player << " (moving left)"<< endl;
+//        }
+//        else  // hitting invalid move
+//            break;
+//    }
     for ( int i = 1; row - i >= 0 && col - i >= 0; ++i) {  // moving up left
         pair<int,int> move = pair<int,int>(row - i, col - i);
         if (isValidMove(player,move)) {
@@ -434,4 +459,9 @@ void Isolation::display() const {
 ostream& operator<<(ostream &out, const Isolation &x) {
     x.display();
     return out;
+}
+
+currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], int depth, int alpha, int beta, bool max_player) {
+
+    return currentMovedNode();
 }

@@ -15,12 +15,18 @@ using namespace std;
 
 const int BOARD_SIZE = 8;
 
+const int INF = INT_MAX;
 
 //void _swapChar ( char& a, char& b) {
 //    char temp = a;
 //    a = b;
 //    b = temp;
 //}
+
+struct currentMovedNode {
+    int score;
+    pair<int, int> movedPosition;
+};
 
 class Isolation {
 public:
@@ -47,11 +53,14 @@ private:
     inline bool isUsed(pair<int,int> position) const;
 
     int utility(const char& player);
-    vector<pair<int,int>> getAllPossitbleMoves(const char& player);
+    vector<pair<int,int>> getAllPossibleMoves(const char& player);
 
-    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
-    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
-    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
+
+    currentMovedNode alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], int depth, int alpha = -INF, int beta = INF, bool max_player = true);
+    void getAllLegalMovesVertHori(vector<pair<int, int>> &list, int player_x, int player_y, bool upOrLeft, bool horizontal);
+//    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
+//    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
+//    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
 
     char board[BOARD_SIZE][BOARD_SIZE];
     vector<string> playerC;
