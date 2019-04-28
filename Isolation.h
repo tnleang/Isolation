@@ -24,6 +24,14 @@ const int INF = INT_MAX;
 //}
 
 struct currentMovedNode {
+    currentMovedNode& operator=(const currentMovedNode &other){
+        if(&other == this){
+            return *this;
+        }
+        this->score = other.score;
+        this->movedPosition = other.movedPosition;
+    }
+
     int score;
     pair<int, int> movedPosition;
 };
@@ -46,6 +54,9 @@ public:
     inline bool isComputerPlay() const {return playing == computer;}
     char whoIsPlaying() const {return playing;}
 
+    void getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, int player_y, int player_x, bool upOrLeft, bool horizontal);
+    void getAllLegalMovesDiagonally(vector<pair<int, int>> &list, int player_y, int player_x, bool dirRight);
+
 private:
     bool isValidMove(const char& player, pair<int,int> movePosition) const;
     bool checkLosingCondition(const char& player) const;
@@ -54,10 +65,16 @@ private:
 
     int utility(const char& player);
     vector<pair<int,int>> getAllPossibleMoves(const char& player);
+    pair<int, int> getMove();
 
+    currentMovedNode iterativeDeepSearch();
+    currentMovedNode alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], const int &depth, int &alpha, int &beta, bool max_player = true);
+    currentMovedNode maxBaseDepthValue(vector<pair<int, int>> &legalMoves, const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move);
+    currentMovedNode minBaseDepthValue(vector<pair<int, int>> &legalMoves, const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move);
+    currentMovedNode maxValue(vector<pair<int, int>> &legalMoves, const int &depth, int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move);
+    currentMovedNode minValue(vector<pair<int, int>> &legalMoves, const int &depth, const int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move);
+    int getHeuristicScore(const pair<int, int> &move);
 
-    currentMovedNode alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], int depth, int alpha = -INF, int beta = INF, bool max_player = true);
-    void getAllLegalMovesVertHori(vector<pair<int, int>> &list, int player_x, int player_y, bool upOrLeft, bool horizontal);
 //    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
 //    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
 //    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);

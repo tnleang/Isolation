@@ -304,15 +304,15 @@ bool Isolation::checkLosingCondition(const char& player) const{
     return true;
 }
 
-void Isolation::getAllLegalMovesVertHori(vector<pair<int, int>> &list, int player_x, int player_y, bool dirUpOrLeft, bool horizontal) {
+void Isolation::getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, int player_y, int player_x, bool dirUpOrLeft, bool horizontal) {
     pair<int, int> move;
-    (horizontal ? move.first : move.second) = (horizontal ? player_x: player_y);
-    int current_selected_pos = (horizontal ? player_y: player_x);
+    (horizontal ? move.first : move.second) = (horizontal ? player_y : player_x);
+    int current_selected_pos = (horizontal ? player_x : player_y);
     int *selected_pair_var = &(horizontal ? move.second : move.first);
     bool notFinished = true;
-    int direction = dirUpOrLeft ? -1 : 1;
-    for (int i = 1; (dirUpOrLeft ? current_selected_pos - i >= 0 : current_selected_pos + i > BOARD_SIZE) && notFinished; ++i) {
-        *selected_pair_var = current_selected_pos + (i*direction);
+
+    for (int i = 1; (dirUpOrLeft ? current_selected_pos - i >= 0 : current_selected_pos + i < BOARD_SIZE) && notFinished; ++i) {
+        *selected_pair_var = current_selected_pos + (dirUpOrLeft ? -i : i);
         if(!isUsed(move)){
             list.push_back(move);
         }else{
@@ -321,8 +321,33 @@ void Isolation::getAllLegalMovesVertHori(vector<pair<int, int>> &list, int playe
     }
 }
 
+void Isolation::getAllLegalMovesDiagonally(vector<pair<int, int>> &list, int player_y, int player_x, bool dirRight){
+    pair<int, int> moveUp;
+    pair<int, int> moveDown;
+    bool upNotFinished = true;
+    bool downNotFinished = true;
+
+    for (int i = 1; (dirRight ? player_x + i < BOARD_SIZE : player_x - i >= 0) && (upNotFinished || downNotFinished); ++i) {
+        if(upNotFinished && player_y - i >= 0){
+            moveUp = pair<int, int>(player_y - i, player_x + (dirRight ? i : -i));
+            if(!isUsed(moveUp)){
+                list.push_back(moveUp);
+            }else{
+                upNotFinished = false;
+            }
+        }
+        if(downNotFinished && player_y + i < BOARD_SIZE){
+            moveDown = pair<int, int>(player_y + i, player_x + (dirRight ? i : -i));
+            if(!isUsed(moveDown)){
+                list.push_back(moveDown);
+            }else{
+                downNotFinished = false;
+            }
+        }
+    }
+}
+
 vector<pair<int,int>> Isolation::getAllPossibleMoves(const char& player) { // I already know where i am
-    const bool DEBUG = false;
     /*
      * get all posible moves from a player
      *      all direction:  8 direction ways
@@ -335,94 +360,12 @@ vector<pair<int,int>> Isolation::getAllPossibleMoves(const char& player) { // I 
     vector<pair<int,int>> successors;
     int row = player == 'X' ? currentX.first : currentO.first;
     int col = player == 'X' ? currentX.second : currentO.second;
-    getAllLegalMovesVertHori(successors, row, col, true, false); // moving up
-//    for ( int i = 1; row - i >= 0; ++i) {  // moving up
-//        pair<int,int> move = pair<int,int>(row - i, col);
-//        if (isValidMove(player,move)) {
-//            successors.push_back(move);
-//            if (DEBUG)
-//                cout << "I pushing "<< player << " (moving up)"<< endl;
-//        }
-//        else  // hitting invalid move
-//            break;
-//    }
-    for ( int i = 1; row - i >= 0 && col + i < BOARD_SIZE; ++i) {  // moving up right
-        pair<int,int> move = pair<int,int>(row - i, col + i);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " at " << move.first << "," << move.second << " (moving up right)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
-
-    getAllLegalMovesVertHori(successors, row, col, false, true); // moving right
-//    for ( int i = 1; col + i < BOARD_SIZE; ++i) {  // moving right
-//        pair<int,int> move = pair<int,int>(row, col + i);
-//        if (isValidMove(player,move)) {
-//            successors.push_back(move);
-//            if (DEBUG)
-//                cout << "I pushing "<< player << " (moving right)"<< endl;
-//        }
-//        else  // hitting invalid move
-//            break;
-//    }
-    for ( int i = 1; row + i < BOARD_SIZE && col + i < BOARD_SIZE; ++i) {  // moving down right
-        pair<int,int> move = pair<int,int>(row + i, col + i);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " (moving down right)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
-    getAllLegalMovesVertHori(successors, row, col, false, false); // moving down
-
-//    for ( int i = 1; row + i < BOARD_SIZE; ++i) {  // moving down
-//        pair<int,int> move = pair<int,int>(row + i, col);
-//        if (isValidMove(player,move)) {
-//            successors.push_back(move);
-//            if (DEBUG)
-//                cout << "I pushing "<< player << " (moving down)"<< endl;
-//        }
-//        else  // hitting invalid move
-//            break;
-//    }
-    for ( int i = 1; row + i < BOARD_SIZE && col - i >= 0; ++i) {  // moving down left
-        pair<int,int> move = pair<int,int>(row + i, col - i);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " (moving down left)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
-
-    getAllLegalMovesVertHori(successors, row, col, true, true); // moving left
-
-//    for ( int i = 1; col - i >= 0; ++i) {  // moving left
-//        pair<int,int> move = pair<int,int>(row, col - i);
-//        if (isValidMove(player,move)) {
-//            successors.push_back(move);
-//            if (DEBUG)
-//                cout << "I pushing "<< player << " (moving left)"<< endl;
-//        }
-//        else  // hitting invalid move
-//            break;
-//    }
-    for ( int i = 1; row - i >= 0 && col - i >= 0; ++i) {  // moving up left
-        pair<int,int> move = pair<int,int>(row - i, col - i);
-        if (isValidMove(player,move)) {
-            successors.push_back(move);
-            if (DEBUG)
-                cout << "I pushing "<< player << " (moving up left)"<< endl;
-        }
-        else  // hitting invalid move
-            break;
-    }
+    getAllLegalMovesVertHoriz(successors, row, col, false, false); // moving down
+    getAllLegalMovesVertHoriz(successors, row, col, false, true); // moving right
+    getAllLegalMovesVertHoriz(successors, row, col, true, false); // moving up
+    getAllLegalMovesVertHoriz(successors, row, col, true, true); // moving left
+    getAllLegalMovesDiagonally(successors, row, col, false); // moving left diagonally
+    getAllLegalMovesDiagonally(successors, row, col, true); // moving right diagonally
     return successors;
 }
 
@@ -461,7 +404,162 @@ ostream& operator<<(ostream &out, const Isolation &x) {
     return out;
 }
 
-currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], int depth, int alpha, int beta, bool max_player) {
+currentMovedNode Isolation::iterativeDeepSearch(){
+    int depth = 1;
+    currentMovedNode node;
+    int alpha = -INF;
+    int beta = INF;
+    while(true){
+        node = alphaBetaSearch(board, depth, alpha, beta);
+        if(node.score == -INF || node.score == INF){
+            break;
+        }
+        ++depth;
+    }
+    return node;
+}
 
-    return currentMovedNode();
+/*
+ * TODO:
+ *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
+ */
+currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE],const int &depth, int &alpha, int &beta, bool max_player) {
+    vector<pair<int, int>> allLegalMoves = getAllPossibleMoves(playing);
+
+    if(allLegalMoves.empty()){
+        currentMovedNode node;
+        node.score = max_player ? -INF : INF;
+        node.movedPosition = pair<int, int>(-1, -1);
+        return node;
+    }
+
+    int lowest_score = -INF;
+    int highest_score = INF;
+    pair<int, int> best_move = pair<int, int>(-1, -1);
+    currentMovedNode node;
+    if(depth == 1){
+        if(max_player){
+            node = maxBaseDepthValue(allLegalMoves, alpha, beta, highest_score, best_move);
+        }else{
+            node = minBaseDepthValue(allLegalMoves, alpha, beta, lowest_score, best_move);
+        }
+    }else{
+        if(max_player){
+            node = maxValue(allLegalMoves, depth, alpha, beta, highest_score, best_move);
+        }else{
+            node = minValue(allLegalMoves, depth, alpha, beta, lowest_score, best_move);
+        }
+    }
+    return node;
+}
+
+int Isolation::getHeuristicScore(const pair<int, int> &move) {
+    return 0;
+}
+
+currentMovedNode Isolation::maxBaseDepthValue(vector<pair<int, int>> &legalMoves, const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move){
+    int score;
+    int current_highest_score;
+    pair<int, int> current_best_move;
+    currentMovedNode node;
+    for(pair<int, int> move : legalMoves){
+        score = getHeuristicScore(move);
+
+        if(score >= beta){
+            node.score = score;
+            node.movedPosition = pair<int, int>(move.first, move.second);
+            return node;
+        }
+        if(score > highest_score){
+            current_highest_score = score;
+            current_best_move = pair<int, int>(move.first, move.second);
+        }
+    }
+
+    node.score = current_highest_score;
+    node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
+    return node;
+}
+
+currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves, const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move) {
+    int score;
+    int current_lowest_score;
+    pair<int, int> current_best_move;
+    currentMovedNode node;
+    for (pair<int, int> move : legalMoves) {
+        score = getHeuristicScore(move);
+
+        if (score <= beta) {
+            node.score = score;
+            node.movedPosition = pair<int, int>(move.first, move.second);
+            return node;
+        }
+        if (score < lowest_score) {
+            current_lowest_score = score;
+            current_best_move = pair<int, int>(move.first, move.second);
+        }
+    }
+
+    node.score = current_lowest_score;
+    node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
+    return node;
+}
+
+/*
+ * TODO:
+ *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
+ */
+currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, const int &depth, int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move){
+    int newBeta = beta;
+    int current_highest_score;
+    pair<int, int> current_best_move;
+    currentMovedNode node;
+    for(pair<int, int> move : legalMoves){
+        node = alphaBetaSearch(board, depth-1, alpha, newBeta, false); // board should actually be the board of the move applied
+
+        if(node.score >= beta){
+            return node;
+        }
+
+        if(node.score > highest_score){
+            current_highest_score = node.score;
+            current_best_move = pair<int, int>(node.movedPosition.first, node.movedPosition.second);
+        }
+        alpha = max(alpha, current_highest_score);
+    }
+    node.score = current_highest_score;
+    node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
+    return node;
+}
+
+/*
+ * TODO:
+ *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
+ */
+currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, const int &depth, const int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move){
+    int newAlpha = alpha;
+    int current_lowest_score;
+    pair<int, int> current_best_move;
+    currentMovedNode node;
+    for(pair<int, int> move : legalMoves){
+        node = alphaBetaSearch(board, depth-1, newAlpha, beta, false); // board should actually be the board of the move applied
+
+        if(node.score <= alpha){
+            return node;
+        }
+
+        if(node.score < lowest_score){
+            current_lowest_score = node.score;
+            current_best_move = pair<int, int>(node.movedPosition.first, node.movedPosition.second);
+        }
+        beta = min(beta, current_lowest_score);
+    }
+    node.score = current_lowest_score;
+    node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
+    return node;
+}
+
+pair<int, int> Isolation::getMove() {
+    currentMovedNode node = iterativeDeepSearch();
+    return node.movedPosition;
 }
