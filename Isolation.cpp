@@ -433,7 +433,7 @@ currentMovedNode Isolation::iterativeDeepSearch(){
  *  The 'playing' value should have the updated position of the player after applying a move on the board.
  */
 currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, bool max_player) {
-    vector<pair<int, int>> allLegalMoves = getAllPossibleMoves(board, player_pos); // The current playing player must have the updated position
+    vector<pair<int, int>> allLegalMoves = getAllPossibleMoves(board, player_pos);
 
     if(allLegalMoves.empty()){
         currentMovedNode node;
@@ -555,7 +555,7 @@ currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, char bo
     for(pair<int, int> move : legalMoves){
         copyBoard(board, newBoard);
         applyMove(move, player_pos, newBoard);
-        node = alphaBetaSearch(newBoard, move, depth-1, alpha, beta, false); // board should actually be the board of the move applied
+        node = alphaBetaSearch(newBoard, move, depth-1, alpha, beta, true); // board should actually be the board of the move applied
 
         if(node.score <= alpha){
             return node;
