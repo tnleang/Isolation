@@ -32,7 +32,7 @@
 *.app
 
 # Cmake folder
-cmake-build-debug
+cmake-build-debug/
 
 # Clion folder
-.idea
+.idea/
