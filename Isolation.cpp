@@ -504,7 +504,7 @@ currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves
         applyMove(move, player_pos, newBoard);
         score = getHeuristicScore(newBoard);
 
-        if (score <= beta) {
+        if (score <= alpha) {
             node.score = score;
             node.movedPosition = pair<int, int>(move.first, move.second);
             return node;
