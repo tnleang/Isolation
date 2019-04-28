@@ -518,13 +518,13 @@ currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves
  * TODO:
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  */
-currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &highest_score, const pair<int, int> &best_move){
+currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &highest_score, const pair<int, int> &best_move){
     int current_highest_score;
     pair<int, int> current_best_move;
     currentMovedNode node;
     char newBoard[BOARD_SIZE][BOARD_SIZE];
     for(pair<int, int> move : legalMoves){
-        copyBoard(this->board, newBoard);
+        copyBoard(board, newBoard);
         applyMove(move, player_pos, newBoard);
         node = alphaBetaSearch(newBoard, move, depth-1, alpha, beta, false); // board should actually be the board of the move applied
 
@@ -547,13 +547,13 @@ currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, pair<in
  * TODO:
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  */
-currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move){
+currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move){
     int current_lowest_score;
     pair<int, int> current_best_move;
     currentMovedNode node;
     char newBoard[BOARD_SIZE][BOARD_SIZE];
     for(pair<int, int> move : legalMoves){
-        copyBoard(this->board, newBoard);
+        copyBoard(board, newBoard);
         applyMove(move, player_pos, newBoard);
         node = alphaBetaSearch(newBoard, move, depth-1, alpha, beta, false); // board should actually be the board of the move applied
 
