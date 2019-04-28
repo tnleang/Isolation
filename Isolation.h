@@ -70,8 +70,8 @@ private:
 
     currentMovedNode iterativeDeepSearch();
     currentMovedNode alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, bool max_player = true);
-    currentMovedNode maxBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move);
-    currentMovedNode minBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move);
+    currentMovedNode maxBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move);
+    currentMovedNode minBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move);
     currentMovedNode maxValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &highest_score, const pair<int, int> &best_move);
     currentMovedNode minValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move);
     int getHeuristicScore(char board[BOARD_SIZE][BOARD_SIZE]);
