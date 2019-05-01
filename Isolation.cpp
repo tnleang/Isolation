@@ -473,9 +473,12 @@ currentMovedNode Isolation::maxBaseDepthValue(vector<pair<int, int>> &legalMoves
     currentMovedNode node;
     char newBoard[BOARD_SIZE][BOARD_SIZE];
     for(pair<int, int> move : legalMoves){
+        Board b;
         copyBoard(board, newBoard);
-        applyMove(move, player_pos, newBoard);
-        score = getHeuristicScore(newBoard);
+        applyMove(move, player_pos, b.board);
+        b.maxPos = move;
+        b.minPos =
+        score = heuristic1();
 
         if(score >= beta){
             node.score = score;
@@ -553,7 +556,9 @@ currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, char bo
  * TODO:
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  */
-currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move){
+currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE],
+                                     pair<int, int> player_pos, const int &depth, int &alpha, int &beta,
+                                     const int &lowest_score, const pair<int, int> &best_move){
     int current_lowest_score;
     pair<int, int> current_best_move;
     currentMovedNode node;
@@ -594,4 +599,35 @@ void Isolation::copyBoard(char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOAR
 void Isolation::applyMove(pair<int, int> move, pair<int, int> player_pos, char board[BOARD_SIZE][BOARD_SIZE]){
     board[player_pos.first][player_pos.second] = '#';
     board[move.first][move.second] = 'X';
+}
+
+
+int Isolation::heuristic1(Board b){
+    /*
+     * calculate the possibility of winning by calcualte the possible moves left of both player
+     *      then compare them
+     */
+    vector<pair<int,int>> playerLeftMoves = getAllPossibleMoves(b.board, b.maxPos);
+    vector<pair<int,int>> opponentLeftMoves = getAllPossibleMoves(b.board, b.minPos);
+    return playerLeftMoves.size() - opponentLeftMoves.size();
+}
+
+int Isolation::heuristic2(Board b){
+    /*
+     * this heuristic builds on top of heuristic 1
+     *      compare the moves left between max and min
+     *          return the different
+     *          if they are the same, compute the distance to the center
+     */
+    vector<pair<int,int>> playerLeftMoves = getAllPossibleMoves(b.board, b.maxPos);
+    vector<pair<int,int>> opponentLeftMoves = getAllPossibleMoves(b.board, b.minPos);
+    if ( playerLeftMoves.size() != opponentLeftMoves.size())
+        return playerLeftMoves.size() - opponentLeftMoves.size();
+
+    // compute the distance away from the center of the board
+    int centerRow = BOARD_SIZE / 2;
+    int centerCol = BOARD_SIZE / 2;
+    int distanceMax = abs( b.maxPos.first - centerRow ) + abs( b.maxPos.second - centerCol );
+    int distanceMin = abs( b.minPos.first - centerRow ) + abs( b.minPos.second - centerCol );
+    return distanceMax - distanceMin;
 }

@@ -10,18 +10,21 @@
 #include <vector>
 #include <string>
 #include <limits>       // std::numeric_limits
+#include <chrono>
 
 using namespace std;
 
 const int BOARD_SIZE = 8;
 
-const int INF = INT_MAX;
+TIME_LIMIT
 
-//void _swapChar ( char& a, char& b) {
-//    char temp = a;
-//    a = b;
-//    b = temp;
-//}
+struct Board {
+    pair<int,int> maxPos;
+    pair<int,int> minPos;
+    char board[BOARD_SIZE][BOARD_SIZE];
+};
+
+const int INF = INT_MAX;
 
 struct currentMovedNode {
     currentMovedNode& operator=(const currentMovedNode &other){
@@ -81,6 +84,9 @@ private:
 //    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
 //    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
 //    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
+
+    int heuristic1 (Board b);
+    int heuristic2 (Board b);
 
     char board[BOARD_SIZE][BOARD_SIZE];
     vector<string> playerC;
