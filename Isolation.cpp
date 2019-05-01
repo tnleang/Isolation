@@ -559,7 +559,7 @@ void Isolation::copyBoard(const char board[BOARD_SIZE][BOARD_SIZE], char newBoar
 void Isolation::applyMove(pair<int, int> move, Board &board, bool max_player){
     pair<int, int> player_pos = max_player ? board.maxPos : board.minPos;
     board.board[player_pos.first][player_pos.second] = '#';
-    board.board[move.first][move.second] = max_player ? 'X' : 'O';
+    board.board[move.first][move.second] = max_player ? computer : opponent;
 }
 
 

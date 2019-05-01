@@ -13,7 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="16b7669a-ebd1-47c3-813f-b717a0322aca" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/Isolation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Isolation.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Isolation.h" beforeDir="false" afterPath="$PROJECT_DIR$/Isolation.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -52,8 +51,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Isolation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="518">
-              <caret line="565" column="35" lean-forward="true" selection-start-line="565" selection-start-column="35" selection-end-line="565" selection-end-column="35" />
+            <state relative-caret-position="450">
+              <caret line="561" column="76" lean-forward="true" selection-start-line="561" selection-start-column="76" selection-end-line="561" selection-end-column="76" />
             </state>
           </provider>
         </entry>
@@ -172,12 +171,12 @@
       <workItem from="1556132073499" duration="25352000" />
       <workItem from="1556401870374" duration="23726000" />
       <workItem from="1556482024093" duration="5471000" />
-      <workItem from="1556749555638" duration="3490000" />
+      <workItem from="1556749555638" duration="3651000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58039000" />
+    <option name="totallyTimeSpent" value="58200000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -238,8 +237,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Isolation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="565" column="35" lean-forward="true" selection-start-line="565" selection-start-column="35" selection-end-line="565" selection-end-column="35" />
+        <state relative-caret-position="450">
+          <caret line="561" column="76" lean-forward="true" selection-start-line="561" selection-start-column="76" selection-end-line="561" selection-end-column="76" />
         </state>
       </provider>
     </entry>
