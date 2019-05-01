@@ -51,8 +51,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Isolation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="561" column="76" lean-forward="true" selection-start-line="561" selection-start-column="76" selection-end-line="561" selection-end-column="76" />
+            <state relative-caret-position="144">
+              <caret line="504" column="21" selection-start-line="504" selection-start-column="21" selection-end-line="504" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -171,12 +171,12 @@
       <workItem from="1556132073499" duration="25352000" />
       <workItem from="1556401870374" duration="23726000" />
       <workItem from="1556482024093" duration="5471000" />
-      <workItem from="1556749555638" duration="3651000" />
+      <workItem from="1556749555638" duration="3787000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58200000" />
+    <option name="totallyTimeSpent" value="58336000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -237,8 +237,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Isolation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="561" column="76" lean-forward="true" selection-start-line="561" selection-start-column="76" selection-end-line="561" selection-end-column="76" />
+        <state relative-caret-position="144">
+          <caret line="504" column="21" selection-start-line="504" selection-start-column="21" selection-end-line="504" selection-end-column="21" />
         </state>
       </provider>
     </entry>

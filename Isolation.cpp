@@ -502,7 +502,7 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
     // No legal moves means terminal state
     if(legalMoves.empty()){
         currentMovedNode node;
-        node.score = -INF;
+        node.score = INF;
         node.movedPosition = pair<int, int>(-1, -1);
         return node;
     }
