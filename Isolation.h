@@ -16,7 +16,7 @@ using namespace std;
 
 const int BOARD_SIZE = 8;
 
-TIME_LIMIT
+const int TIME_LIMIT = 20;
 
 struct Board {
     pair<int,int> maxPos;
@@ -64,23 +64,20 @@ private:
     bool checkLosingCondition(const char& player) const;
     inline bool outOfBound(pair<int,int> position) const;
     inline bool isUsed(pair<int,int> position) const;
-    inline bool isUsed(pair<int, int> positio, char board[BOARD_SIZE][BOARD_SIZE]) const;
+    inline bool isUsed(pair<int, int> position, const char board[BOARD_SIZE][BOARD_SIZE]) const;
     int utility(const char& player);
-    void getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool upOrLeft, bool horizontal);
-    void getAllLegalMovesDiagonally(vector<pair<int, int>> &list, char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirRight);
-    vector<pair<int,int>> getAllPossibleMoves(char board[BOARD_SIZE][BOARD_SIZE], const pair<int, int> &player_pos);
+    void getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool upOrLeft, bool horizontal);
+    void getAllLegalMovesDiagonally(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirRight);
+    vector<pair<int,int>> getAllPossibleMoves(const char board[BOARD_SIZE][BOARD_SIZE], const pair<int, int> &player_pos);
     pair<int, int> getMove();
 
     currentMovedNode iterativeDeepSearch();
-    currentMovedNode alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, bool max_player = true);
-    currentMovedNode maxBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move);
-    currentMovedNode minBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move);
-    currentMovedNode maxValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &highest_score, const pair<int, int> &best_move);
-    currentMovedNode minValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &lowest_score, const pair<int, int> &best_move);
-    int getHeuristicScore(char board[BOARD_SIZE][BOARD_SIZE]);
+    currentMovedNode alphaBetaSearch(const Board &board, const int &depth, int &alpha, int &beta, bool max_player = true);
+    currentMovedNode maxValue(const Board &board, const int &depth, int &alpha, int &beta);
+    currentMovedNode minValue(const Board &board, const int &depth, int &alpha, int &beta);
 
-    void copyBoard(char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOARD_SIZE][BOARD_SIZE]);
-    void applyMove(pair<int, int> move, pair<int, int> player_pos, char board[BOARD_SIZE][BOARD_SIZE]);
+    void copyBoard(const char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOARD_SIZE][BOARD_SIZE]);
+    void applyMove(pair<int, int> move, Board &board, bool max_player);
 //    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
 //    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
 //    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);

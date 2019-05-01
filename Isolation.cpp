@@ -276,7 +276,7 @@ inline bool Isolation::outOfBound(pair<int, int> position) const {
             position.second < 0 || position.second >= BOARD_SIZE;
 }
 
-inline bool Isolation::isUsed(pair<int, int> position, char board[BOARD_SIZE][BOARD_SIZE]) const {
+inline bool Isolation::isUsed(pair<int, int> position, const char board[BOARD_SIZE][BOARD_SIZE]) const {
     /*
      * check if the spot is avialible to move
      */
@@ -311,7 +311,7 @@ bool Isolation::checkLosingCondition(const char& player) const{
     return true;
 }
 
-void Isolation::getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirUpOrLeft, bool horizontal) {
+void Isolation::getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirUpOrLeft, bool horizontal) {
     pair<int, int> move;
     (horizontal ? move.first : move.second) = (horizontal ? player_y : player_x);
     int current_selected_pos = (horizontal ? player_x : player_y);
@@ -328,7 +328,7 @@ void Isolation::getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, char boa
     }
 }
 
-void Isolation::getAllLegalMovesDiagonally(vector<pair<int, int>> &list, char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirRight){
+void Isolation::getAllLegalMovesDiagonally(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirRight){
     pair<int, int> moveUp;
     pair<int, int> moveDown;
     bool upNotFinished = true;
@@ -354,7 +354,7 @@ void Isolation::getAllLegalMovesDiagonally(vector<pair<int, int>> &list, char bo
     }
 }
 
-vector<pair<int,int>> Isolation::getAllPossibleMoves(char board[BOARD_SIZE][BOARD_SIZE], const pair<int, int> &player_pos) {
+vector<pair<int,int>> Isolation::getAllPossibleMoves(const char board[BOARD_SIZE][BOARD_SIZE], const pair<int, int> &player_pos) {
     /*
      * get all posible moves from a player
      *      all direction:  8 direction ways
@@ -421,9 +421,12 @@ currentMovedNode Isolation::iterativeDeepSearch(){
     int alpha = -INF;
     int beta = INF;
     currentMovedNode node;
-    pair<int, int> player_pos = (computer == 'X' ? currentX : currentO);
+    Board newBoard;
+    copyBoard(this->board, newBoard.board);
+    newBoard.maxPos = (computer == 'X' ? currentX : currentO);
+    newBoard.minPos = (computer == 'O' ? currentX : currentO);
     while(true){
-        node = alphaBetaSearch(this->board, player_pos, depth, alpha, beta);
+        node = alphaBetaSearch(newBoard, depth, alpha, beta);
         if(node.score == -INF || node.score == INF){
             break;
         }
@@ -438,88 +441,8 @@ currentMovedNode Isolation::iterativeDeepSearch(){
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  *  The 'playing' value should have the updated position of the player after applying a move on the board.
  */
-currentMovedNode Isolation::alphaBetaSearch(char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, bool max_player) {
-    vector<pair<int, int>> allLegalMoves = getAllPossibleMoves(board, player_pos);
-
-    if(allLegalMoves.empty()){
-        currentMovedNode node;
-        node.score = max_player ? -INF : INF;
-        node.movedPosition = pair<int, int>(-1, -1);
-        return node;
-    }
-
-    int lowest_score = -INF;
-    int highest_score = INF;
-    pair<int, int> best_move = pair<int, int>(-1, -1);
-    currentMovedNode node;
-    if(depth == 1){ // Terminal State aka leaf node
-        node = max_player ? maxBaseDepthValue(allLegalMoves, board, player_pos, alpha, beta, highest_score, best_move) :
-                minBaseDepthValue(allLegalMoves, board, player_pos, alpha, beta, lowest_score, best_move);
-    }else{
-        node = max_player ? maxValue(allLegalMoves, board, player_pos, depth, alpha, beta, highest_score, best_move) :
-                minValue(allLegalMoves, board, player_pos, depth, alpha, beta, lowest_score, best_move);
-    }
-    return node;
-}
-
-int Isolation::getHeuristicScore(char board[BOARD_SIZE][BOARD_SIZE]) {
-    return 0;
-}
-
-currentMovedNode Isolation::maxBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &alpha, const int &beta, const int &highest_score, const pair<int, int> &best_move){
-    int score;
-    int current_highest_score;
-    pair<int, int> current_best_move;
-    currentMovedNode node;
-    char newBoard[BOARD_SIZE][BOARD_SIZE];
-    for(pair<int, int> move : legalMoves){
-        Board b;
-        copyBoard(board, newBoard);
-        applyMove(move, player_pos, b.board);
-        b.maxPos = move;
-        b.minPos =
-        score = heuristic1();
-
-        if(score >= beta){
-            node.score = score;
-            node.movedPosition = pair<int, int>(move.first, move.second);
-            return node;
-        }
-        if(score > highest_score){
-            current_highest_score = score;
-            current_best_move = pair<int, int>(move.first, move.second);
-        }
-    }
-
-    node.score = current_highest_score;
-    node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
-    return node;
-}
-
-currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &alpha, const int &beta, const int &lowest_score, const pair<int, int> &best_move) {
-    int score;
-    int current_lowest_score;
-    pair<int, int> current_best_move;
-    char newBoard[BOARD_SIZE][BOARD_SIZE];
-    currentMovedNode node;
-    for (pair<int, int> move : legalMoves) {
-        copyBoard(board, newBoard);
-        applyMove(move, player_pos, newBoard);
-        score = getHeuristicScore(newBoard);
-
-        if (score <= alpha) {
-            node.score = score;
-            node.movedPosition = pair<int, int>(move.first, move.second);
-            return node;
-        }
-        if (score < lowest_score) {
-            current_lowest_score = score;
-            current_best_move = pair<int, int>(move.first, move.second);
-        }
-    }
-
-    node.score = current_lowest_score;
-    node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
+currentMovedNode Isolation::alphaBetaSearch(const Board &board, const int &depth, int &alpha, int &beta, bool max_player) {
+    currentMovedNode node = max_player ? maxValue(board, depth, alpha, beta) : minValue(board, depth, alpha, beta);
     return node;
 }
 
@@ -527,56 +450,93 @@ currentMovedNode Isolation::minBaseDepthValue(vector<pair<int, int>> &legalMoves
  * TODO:
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  */
-currentMovedNode Isolation::maxValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE], pair<int, int> player_pos, const int &depth, int &alpha, int &beta, const int &highest_score, const pair<int, int> &best_move){
-    int current_highest_score;
+currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &alpha, int &beta){
+    vector<pair<int, int>> legalMoves = getAllPossibleMoves(board.board, board.maxPos);
+    // No legal moves means terminal state
+    if(legalMoves.empty()){
+        currentMovedNode node;
+        node.score = -INF;
+        node.movedPosition = pair<int, int>(-1, -1);
+        return node;
+    }
+
+    int current_highest_score = -INF;
     pair<int, int> current_best_move;
     currentMovedNode node;
-    char newBoard[BOARD_SIZE][BOARD_SIZE];
+
     for(pair<int, int> move : legalMoves){
-        copyBoard(board, newBoard);
-        applyMove(move, player_pos, newBoard);
-        node = alphaBetaSearch(newBoard, move, depth-1, alpha, beta, false); // board should actually be the board of the move applied
+        Board nextBoard;
+        copyBoard(board.board, nextBoard.board);
+        applyMove(move, nextBoard, true);
+        nextBoard.minPos = board.minPos;
+        nextBoard.maxPos = move;
+
+        if(depth == 1){
+            node.score = heuristic1(nextBoard);
+            node.movedPosition = move;
+        }else{
+            node = alphaBetaSearch(nextBoard, depth-1, alpha, beta, false);
+        }
 
         if(node.score >= beta){
             return node;
         }
 
-        if(node.score > highest_score){
+        if(node.score > current_highest_score){
             current_highest_score = node.score;
             current_best_move = pair<int, int>(node.movedPosition.first, node.movedPosition.second);
         }
-        alpha = max(alpha, current_highest_score);
+
+        if(depth > 1){
+            alpha = max(alpha, current_highest_score);
+        }
     }
     node.score = current_highest_score;
     node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
     return node;
 }
 
-/*
- * TODO:
- *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
- */
-currentMovedNode Isolation::minValue(vector<pair<int, int>> &legalMoves, char board[BOARD_SIZE][BOARD_SIZE],
-                                     pair<int, int> player_pos, const int &depth, int &alpha, int &beta,
-                                     const int &lowest_score, const pair<int, int> &best_move){
-    int current_lowest_score;
+currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &alpha, int &beta){
+    vector<pair<int, int>> legalMoves = getAllPossibleMoves(board.board, board.minPos);
+
+    // No legal moves means terminal state
+    if(legalMoves.empty()){
+        currentMovedNode node;
+        node.score = -INF;
+        node.movedPosition = pair<int, int>(-1, -1);
+        return node;
+    }
+
+    int current_lowest_score = INF;
     pair<int, int> current_best_move;
     currentMovedNode node;
-    char newBoard[BOARD_SIZE][BOARD_SIZE];
+
     for(pair<int, int> move : legalMoves){
-        copyBoard(board, newBoard);
-        applyMove(move, player_pos, newBoard);
-        node = alphaBetaSearch(newBoard, move, depth-1, alpha, beta, true); // board should actually be the board of the move applied
+        Board nextBoard;
+        copyBoard(board.board, nextBoard.board);
+        applyMove(move, nextBoard, false);
+        nextBoard.maxPos = board.maxPos;
+        nextBoard.minPos = move;
+
+        if(depth == 1){
+            node.score = heuristic1(nextBoard);
+            node.movedPosition = move;
+        }else{
+            node = alphaBetaSearch(nextBoard, depth-1, alpha, beta, true);
+        }
 
         if(node.score <= alpha){
             return node;
         }
 
-        if(node.score < lowest_score){
+        if(node.score < current_lowest_score){
             current_lowest_score = node.score;
             current_best_move = pair<int, int>(node.movedPosition.first, node.movedPosition.second);
         }
-        beta = min(beta, current_lowest_score);
+
+        if(depth > 1){
+            beta = min(alpha, current_lowest_score);
+        }
     }
     node.score = current_lowest_score;
     node.movedPosition = pair<int, int>(current_best_move.first, current_best_move.second);
@@ -588,7 +548,7 @@ pair<int, int> Isolation::getMove() {
     return node.movedPosition;
 }
 
-void Isolation::copyBoard(char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOARD_SIZE][BOARD_SIZE]) {
+void Isolation::copyBoard(const char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOARD_SIZE][BOARD_SIZE]) {
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
             newBoard[i][j] = board[i][j];
@@ -596,9 +556,10 @@ void Isolation::copyBoard(char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOAR
     }
 }
 
-void Isolation::applyMove(pair<int, int> move, pair<int, int> player_pos, char board[BOARD_SIZE][BOARD_SIZE]){
-    board[player_pos.first][player_pos.second] = '#';
-    board[move.first][move.second] = 'X';
+void Isolation::applyMove(pair<int, int> move, Board &board, bool max_player){
+    pair<int, int> player_pos = max_player ? board.maxPos : board.minPos;
+    board.board[player_pos.first][player_pos.second] = '#';
+    board.board[move.first][move.second] = max_player ? 'X' : 'O';
 }
 
 
