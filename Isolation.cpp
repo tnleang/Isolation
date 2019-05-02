@@ -456,6 +456,7 @@ currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &
     vector<pair<int, int>> legalMoves = getAllPossibleMoves(board.board, board.maxPos);
     // No legal moves means terminal state
     if(legalMoves.empty()){
+//        cout << "No moves left for max" << "\n";
         currentMovedNode node;
         node.score = -INF;
         node.movedPosition = pair<int, int>(-1, -1);
@@ -472,9 +473,9 @@ currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &
         nextBoard.minPos = board.minPos;
         nextBoard.maxPos = board.maxPos;
         applyMove(move, nextBoard, true);
-        cout << "maxValue move, depth:" << depth << "\n";
-        printBoard(nextBoard.board);
         nextBoard.maxPos = move;
+//        cout << "maxValue move, depth:" << depth << " beta: " << beta << "\n";
+//        printBoard(nextBoard.board);
 
         if(depth == 1){
             node.score = heuristic1(nextBoard);
@@ -506,6 +507,7 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
 
     // No legal moves means terminal state
     if(legalMoves.empty()){
+//        cout << "No moves left for min" << "\n";
         currentMovedNode node;
         node.score = INF;
         node.movedPosition = pair<int, int>(-1, -1);
@@ -522,8 +524,8 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
         nextBoard.minPos = board.minPos;
         nextBoard.maxPos = board.maxPos;
         applyMove(move, nextBoard, false);
-        cout << "minValue move, depth:" << depth << "\n";
-        printBoard(nextBoard.board);
+//        cout << "minValue move, depth:" << depth << " alpha: " << alpha << "\n";
+//        printBoard(nextBoard.board);
         nextBoard.minPos = move;
 
         if(depth == 1){
@@ -543,7 +545,7 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
         }
 
         if(depth > 1){
-            beta = min(alpha, current_lowest_score);
+            beta = min(beta, current_lowest_score);
         }
     }
     node.score = current_lowest_score;

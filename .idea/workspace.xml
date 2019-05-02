@@ -13,8 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="16b7669a-ebd1-47c3-813f-b717a0322aca" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/Isolation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Isolation.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Isolation.h" beforeDir="false" afterPath="$PROJECT_DIR$/Isolation.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Isolation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
+            <state relative-caret-position="266">
+              <caret line="527" column="38" lean-forward="true" selection-start-line="527" selection-start-column="38" selection-end-line="527" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -174,12 +172,12 @@
       <workItem from="1556132073499" duration="25352000" />
       <workItem from="1556401870374" duration="23726000" />
       <workItem from="1556482024093" duration="5471000" />
-      <workItem from="1556749555638" duration="5818000" />
+      <workItem from="1556749555638" duration="7236000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60367000" />
+    <option name="totallyTimeSpent" value="61785000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -240,8 +238,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Isolation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
+        <state relative-caret-position="266">
+          <caret line="527" column="38" lean-forward="true" selection-start-line="527" selection-start-column="38" selection-end-line="527" selection-end-column="38" />
         </state>
       </provider>
     </entry>
