@@ -97,9 +97,6 @@ private:
     void printBoard(const char board[BOARD_SIZE][BOARD_SIZE]);
 
     bool isTimeOver();
-//    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
-//    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
-//    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
 
     int heuristic1 (Board b);
     int heuristic2 (Board b);
