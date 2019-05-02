@@ -56,7 +56,7 @@ public:
     bool isWin(const char& player);
     inline bool isComputerPlay() const {return playing == computer;}
     char whoIsPlaying() const {return playing;}
-
+    pair<int, int> getMove();
 
 
 private:
@@ -69,7 +69,7 @@ private:
     void getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool upOrLeft, bool horizontal);
     void getAllLegalMovesDiagonally(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirRight);
     vector<pair<int,int>> getAllPossibleMoves(const char board[BOARD_SIZE][BOARD_SIZE], const pair<int, int> &player_pos);
-    pair<int, int> getMove();
+
 
     currentMovedNode iterativeDeepSearch();
     currentMovedNode alphaBetaSearch(const Board &board, const int &depth, int &alpha, int &beta, bool max_player = true);
@@ -78,6 +78,7 @@ private:
 
     void copyBoard(const char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOARD_SIZE][BOARD_SIZE]);
     void applyMove(pair<int, int> move, Board &board, bool max_player);
+    void printBoard(const char board[BOARD_SIZE][BOARD_SIZE]);
 //    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
 //    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
 //    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);

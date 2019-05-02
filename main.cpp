@@ -18,28 +18,34 @@ int main() {
     cout << game;
     cur = 'X';
 
-    while(play) {
-        if (game.isComputerPlay()) {
-            cout << " Make a move for C: ";
-            cin >> movee;
-            if (game.computeMove(movee)) {
-                //cur = cur == 'X' ? 'O' : 'X';
-            }
-        } else {
-            cout << " Make a move for O: ";
-            cin >> movee;
-            if (game.opponentMove(movee)) {
-                //cur = cur == 'X' ? 'O' : 'X';
-            }
-        }
-        cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
-        cout << game << endl;
-        if (game.isWin(cur)){
-            cout << cur << " is the winner!" << endl;
-            play = false;
-        }
-    }
+    game.computeMove("F6");
+    cout << game;
+    game.opponentMove("H2");
+    cout << game;
+//    while(play) {
+//        if (game.isComputerPlay()) {
+//            cout << " Make a move for C: ";
+//            cin >> movee;
+//            if (game.computeMove(movee)) {
+//                //cur = cur == 'X' ? 'O' : 'X';
+//            }
+//        } else {
+//            cout << " Make a move for O: ";
+//            cin >> movee;
+//            if (game.opponentMove(movee)) {
+//                //cur = cur == 'X' ? 'O' : 'X';
+//            }
+//        }
+//        cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
+//        cout << game << endl;
+//        if (game.isWin(cur)){
+//            cout << cur << " is the winner!" << endl;
+//            play = false;
+//        }
+//    }
 
+    pair<int, int> comp_move = game.getMove();
+    cout << "best move: " << comp_move.first << ":" << comp_move.second << "\n";
 
 //    game.opponentMove("A7");
 //    //game.makeMove('X',1,7);

@@ -379,7 +379,7 @@ vector<pair<int,int>> Isolation::getAllPossibleMoves(const char board[BOARD_SIZE
 void Isolation::display() const {
     int i = 0, j;
 
-    cout << "  1 2 3 4 5 6 7 8      Computer vs. Opponent" << endl;
+    cout << " 1 2 3 4 5 6 7 8      Computer vs. Opponent" << endl;
     while ( i < BOARD_SIZE || i < playerC.size() || i < playerO.size() ) {
         if ( i <  BOARD_SIZE) {
             cout << char(i + 65) << " ";
@@ -442,6 +442,7 @@ currentMovedNode Isolation::iterativeDeepSearch(){
  *  The 'playing' value should have the updated position of the player after applying a move on the board.
  */
 currentMovedNode Isolation::alphaBetaSearch(const Board &board, const int &depth, int &alpha, int &beta, bool max_player) {
+//    cout << "alphabeta depth: " << depth << "\n";
     currentMovedNode node = max_player ? maxValue(board, depth, alpha, beta) : minValue(board, depth, alpha, beta);
     return node;
 }
@@ -451,6 +452,7 @@ currentMovedNode Isolation::alphaBetaSearch(const Board &board, const int &depth
  *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
  */
 currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &alpha, int &beta){
+//    cout << "maxValue depth: " << depth << "\n";
     vector<pair<int, int>> legalMoves = getAllPossibleMoves(board.board, board.maxPos);
     // No legal moves means terminal state
     if(legalMoves.empty()){
@@ -467,8 +469,11 @@ currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &
     for(pair<int, int> move : legalMoves){
         Board nextBoard;
         copyBoard(board.board, nextBoard.board);
-        applyMove(move, nextBoard, true);
         nextBoard.minPos = board.minPos;
+        nextBoard.maxPos = board.maxPos;
+        applyMove(move, nextBoard, true);
+        cout << "maxValue move, depth:" << depth << "\n";
+        printBoard(nextBoard.board);
         nextBoard.maxPos = move;
 
         if(depth == 1){
@@ -514,8 +519,11 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
     for(pair<int, int> move : legalMoves){
         Board nextBoard;
         copyBoard(board.board, nextBoard.board);
-        applyMove(move, nextBoard, false);
+        nextBoard.minPos = board.minPos;
         nextBoard.maxPos = board.maxPos;
+        applyMove(move, nextBoard, false);
+        cout << "minValue move, depth:" << depth << "\n";
+        printBoard(nextBoard.board);
         nextBoard.minPos = move;
 
         if(depth == 1){
@@ -591,4 +599,15 @@ int Isolation::heuristic2(Board b){
     int distanceMax = abs( b.maxPos.first - centerRow ) + abs( b.maxPos.second - centerCol );
     int distanceMin = abs( b.minPos.first - centerRow ) + abs( b.minPos.second - centerCol );
     return distanceMax - distanceMin;
+}
+
+void Isolation::printBoard(const char board[BOARD_SIZE][BOARD_SIZE]) {
+    cout << "  1 2 3 4 5 6 7 8" << endl;
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        cout << char(i + 65) << " ";
+        for (int j = 0; j < BOARD_SIZE; ++j) {
+            cout << board[i][j] << " ";
+        }
+        cout << "\n";
+    }
 }
