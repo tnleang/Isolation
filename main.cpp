@@ -18,7 +18,10 @@ int main() {
     cout << game;
     cur = 'X';
 
-//    game.computeMove("F6");
+    game.computeMove("G7");
+    cout << game;
+    game.opponentMove("H1");
+    cout << game;
 //    cout << game;
 //    game.opponentMove("H2");
 //    cout << game;
@@ -45,7 +48,7 @@ int main() {
 //    }
 
     pair<int, int> comp_move = game.getMove();
-    cout << "best move: " << comp_move.first << ":" << comp_move.second << "\n";
+    cout << "best move: " << comp_move.first << " , " << comp_move.second << "\n";
 
 //    game.opponentMove("A7");
 //    //game.makeMove('X',1,7);

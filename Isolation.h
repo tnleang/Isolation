@@ -22,6 +22,23 @@ struct Board {
     pair<int,int> maxPos;
     pair<int,int> minPos;
     char board[BOARD_SIZE][BOARD_SIZE];
+
+    Board& operator=(const Board &other){
+        if(&other == this){
+            return *this;
+        }
+        this->maxPos = other.maxPos;
+        this->minPos = other.minPos;
+        this->copyBoard(other.board);
+    }
+
+    void copyBoard(const char board[BOARD_SIZE][BOARD_SIZE]){
+        for (int i = 0; i < BOARD_SIZE; ++i) {
+            for (int j = 0; j < BOARD_SIZE; ++j) {
+                this->board[i][j] = board[i][j];
+            }
+        }
+    }
 };
 
 const int INF = INT_MAX;
@@ -76,7 +93,6 @@ private:
     currentMovedNode maxValue(const Board &board, const int &depth, int &alpha, int &beta);
     currentMovedNode minValue(const Board &board, const int &depth, int &alpha, int &beta);
 
-    void copyBoard(const char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOARD_SIZE][BOARD_SIZE]);
     void applyMove(pair<int, int> move, Board &board, bool max_player);
     void printBoard(const char board[BOARD_SIZE][BOARD_SIZE]);
 
