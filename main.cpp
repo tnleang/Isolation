@@ -16,8 +16,17 @@ int main() {
     cin >> who;
     Isolation game = Isolation(who);
     cout << game;
-    cur = 'X';
+    cur = 'O';
 
+    /**
+     * So far the alphabeta works, it takes a while to get an answer because it uses iterative deepening
+     * and has to iterate through the tree again for every new depth, e.x. depth: 1 => 1,2 => 1,2,3 => and so forth
+     * until it finds a terminal state, but at the beginning of the game the iterative deepening would not hit terminal states
+     * before 20 seconds. So, instead it returns the move with the highest score.
+     *
+     * TODO:
+     *  Create menu to handle opponent's input and computer's getMove and apply that move.
+     */
     game.computeMove("G7");
     cout << game;
     game.opponentMove("H1");

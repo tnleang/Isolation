@@ -445,21 +445,11 @@ currentMovedNode Isolation::iterativeDeepSearch(){
     return node;
 }
 
-/*
- * TODO:
- *  Handle timing
- *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
- *  The 'playing' value should have the updated position of the player after applying a move on the board.
- */
 currentMovedNode Isolation::alphaBetaSearch(const Board &board, const int &depth, int &alpha, int &beta, bool max_player) {
     currentMovedNode node = max_player ? maxValue(board, depth, alpha, beta) : minValue(board, depth, alpha, beta);
     return node;
 }
 
-/*
- * TODO:
- *  The 'board' value when calling alphabeta should actually be a copy of the board with the move applied.
- */
 currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &alpha, int &beta){
 //    cout << "maxValue depth: " << depth << "\n";
     vector<pair<int, int>> legalMoves = getAllPossibleMoves(board.board, board.maxPos);
