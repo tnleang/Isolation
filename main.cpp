@@ -18,10 +18,10 @@ int main() {
     cout << game;
     cur = 'X';
 
-    game.computeMove("F6");
-    cout << game;
-    game.opponentMove("H2");
-    cout << game;
+//    game.computeMove("F6");
+//    cout << game;
+//    game.opponentMove("H2");
+//    cout << game;
 //    while(play) {
 //        if (game.isComputerPlay()) {
 //            cout << " Make a move for C: ";

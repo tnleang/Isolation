@@ -79,6 +79,8 @@ private:
     void copyBoard(const char board[BOARD_SIZE][BOARD_SIZE], char newBoard[BOARD_SIZE][BOARD_SIZE]);
     void applyMove(pair<int, int> move, Board &board, bool max_player);
     void printBoard(const char board[BOARD_SIZE][BOARD_SIZE]);
+
+    bool isTimeOver();
 //    pair<int,int> alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]);
 //    int maxValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
 //    int minValue(char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta);
@@ -95,7 +97,7 @@ private:
     char waiting;
     char computer;
     char opponent;
-
+    chrono::time_point<chrono::system_clock> startTime;
 
 };
 

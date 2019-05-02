@@ -425,12 +425,18 @@ currentMovedNode Isolation::iterativeDeepSearch(){
     copyBoard(this->board, newBoard.board);
     newBoard.maxPos = (computer == 'X' ? currentX : currentO);
     newBoard.minPos = (computer == 'O' ? currentX : currentO);
+    startTime = chrono::high_resolution_clock::now();
     while(true){
         node = alphaBetaSearch(newBoard, depth, alpha, beta);
         if(node.score == -INF || node.score == INF){
             break;
         }
+        alpha = -INF;
+        beta = INF;
         ++depth;
+        if(isTimeOver()){
+            break;
+        }
     }
     return node;
 }
@@ -474,7 +480,7 @@ currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &
         nextBoard.maxPos = board.maxPos;
         applyMove(move, nextBoard, true);
         nextBoard.maxPos = move;
-//        cout << "maxValue move, depth:" << depth << " beta: " << beta << "\n";
+//        cout << "maxValue move, depth:" << depth << " alpha: " << alpha << " beta: " << beta << "\n";
 //        printBoard(nextBoard.board);
 
         if(depth == 1){
@@ -493,8 +499,10 @@ currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &
             current_best_move = pair<int, int>(node.movedPosition.first, node.movedPosition.second);
         }
 
-        if(depth > 1){
-            alpha = max(alpha, current_highest_score);
+        alpha = max(alpha, current_highest_score);
+
+        if(isTimeOver()){
+            break;
         }
     }
     node.score = current_highest_score;
@@ -524,7 +532,7 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
         nextBoard.minPos = board.minPos;
         nextBoard.maxPos = board.maxPos;
         applyMove(move, nextBoard, false);
-//        cout << "minValue move, depth:" << depth << " alpha: " << alpha << "\n";
+//        cout << "minValue move, depth:" << depth << " alpha: " << alpha << " beta: " << beta << "\n";
 //        printBoard(nextBoard.board);
         nextBoard.minPos = move;
 
@@ -544,8 +552,10 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
             current_best_move = pair<int, int>(node.movedPosition.first, node.movedPosition.second);
         }
 
-        if(depth > 1){
-            beta = min(beta, current_lowest_score);
+        beta = min(beta, current_lowest_score);
+
+        if(isTimeOver()){
+            break;
         }
     }
     node.score = current_lowest_score;
@@ -612,4 +622,8 @@ void Isolation::printBoard(const char board[BOARD_SIZE][BOARD_SIZE]) {
         }
         cout << "\n";
     }
+}
+
+bool Isolation::isTimeOver() {
+    return chrono::duration_cast<chrono::seconds>(chrono::high_resolution_clock::now() - startTime).count() > TIME_LIMIT;
 }
