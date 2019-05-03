@@ -25,19 +25,13 @@ int main() {
      * TODO:
      *  Create menu to handle opponent's input and computer's getMove and apply that move.
      */
-//     game.makeMove('X',7,0);
-//    cout << game;
-//    game.makeMove('X',3,4);
-//    cout << game;
     while(play) {
         if (game.isComputerPlay()) {
             game.computerMove();
         } else {
             cout << " Make a move for O: ";
             cin >> movee;
-            if (game.opponentMove(movee)) {
-                //cur = cur == 'X' ? 'O' : 'X';
-            }
+            game.opponentMove(movee);
         }
         cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
         cout << game << endl;
@@ -46,19 +40,6 @@ int main() {
             play = false;
         }
     }
-
-//    pair<int, int> comp_move = game.getMove();
-//    cout << "best move: " << comp_move.first << " , " << comp_move.second << "\n";
-//
-////    game.opponentMove("A7");
-////    //game.makeMove('X',1,7);
-////    cout << game;
-////    game.opponentMove("A2");
-////    //game.makeMove('X',1,2);
-////    cout << game;
-////    game.opponentMove("A8");
-////    //game.makeMove('X',1,8);
-////    cout << game;
 
     return 0;
 }
