@@ -5,6 +5,7 @@
 #ifndef ISOLATION_ISOLATION_H
 #define ISOLATION_ISOLATION_H
 
+
 #include <iostream>
 #include <cstdlib>
 #include <vector>
@@ -16,7 +17,7 @@ using namespace std;
 
 const int BOARD_SIZE = 8;
 
-const int TIME_LIMIT = 20;
+const int TIME_LIMIT = 10;
 
 struct Board {
     pair<int,int> maxPos;
@@ -49,7 +50,9 @@ struct currentMovedNode {
             return *this;
         }
         this->score = other.score;
-        this->movedPosition = other.movedPosition;
+        this->movedPosition.first = other.movedPosition.first;
+        this->movedPosition.second = other.movedPosition.second;
+        return *this;
     }
 
     int score;
@@ -65,8 +68,7 @@ public:
     void display() const;
     bool makeMove(const char& player, int row, int col);
     friend ostream& operator<<(ostream &out, const Isolation &x);
-    string getcurrentX() const;
-    string getcurrentO() const;
+    string getcurrent(pair<int,int> move) const;
     void computerMove();
     bool computeMove(string movingPosition); // testing function
     bool opponentMove(string movingPosition);
@@ -110,9 +112,10 @@ private:
     char waiting;
     char computer;
     char opponent;
-    chrono::time_point<chrono::system_clock> startTime;
+    chrono::high_resolution_clock::time_point startTime;
 
 };
+
 
 
 

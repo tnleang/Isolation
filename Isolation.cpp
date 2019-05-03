@@ -36,10 +36,9 @@ void Isolation::initialize() {
 }
 
 void Isolation::computerMove() {
-
-//    pair<int,int> move = alphaBetaSreach(board);
-//    makeMove(computer,move.first,move.second);
-
+    pair<int,int> move = getMove();
+    makeMove(computer, move.first, move.second);
+    playerC.emplace_back(getcurrent(move));
 }
 
 bool Isolation::computeMove(string movingPosition) {
@@ -56,13 +55,17 @@ bool Isolation::computeMove(string movingPosition) {
 bool Isolation::opponentMove(string movingPosition) {
     // need to handle the user input
     // tokenize the moving position format
-    pair<int,int> move = pair<int,int>(movingPosition[0] - 65, movingPosition[1] - 49);
-    cout << move.first <<" , " << move.second << endl;
-    if ( isValidMove(opponent, move) ) {
-        makeMove(opponent, move.first, move.second);
-        playerO.emplace_back(movingPosition);
-        return true;
-    }
+//    pair<int,int> move = pair<int,int>(movingPosition[0] - 65, movingPosition[1] - 49);
+//    cout << move.first <<" , " << move.second << endl;
+//    if ( isValidMove(opponent, move) ) {
+//        makeMove(opponent, move.first, move.second);
+//        playerO.emplace_back(movingPosition);
+//        return true;
+//    }
+
+    pair<int,int> move = getMove();
+    makeMove(opponent, move.first, move.second);
+    playerO.emplace_back(getcurrent(move));
     return false;
 }
 
@@ -107,17 +110,10 @@ bool Isolation::opponentMove(string movingPosition) {
 //     */
 //}
 
-string Isolation::getcurrentX() const {
+string Isolation::getcurrent(pair<int,int> move) const {
     string position = "";
-    position.append(1,char(currentX.first + 65));
-    position.append(1,char(currentX.second + 49));
-    return position;
-}
-
-string Isolation::getcurrentO() const {
-    string position = "";
-    position.append(1,char(currentO.first + 65));
-    position.append(1,char(currentO.second + 49));
+    position.append(1,char(move.first + 65));
+    position.append(1,char(move.second + 49));
     return position;
 }
 
@@ -160,7 +156,7 @@ bool Isolation::makeMove(const char& player, int row, int col) {   // assume it 
 }
 
 bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) const {
-    const bool DEBUG = false;
+    const bool DEBUG = true;
     /*
      *  check for valid move
      *      should return false if there is an '#' along the path
@@ -222,7 +218,7 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
     }
     else if (rowDis == colDis) { // proper diagonal
         if (row > movePosition.first && col < movePosition.second) { // TOP RIGHT
-            for ( int i= 0; i < rowDis; ++i) {
+            for ( int i= 1; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row-i,col+i))) {
                     if (DEBUG)
                         cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
@@ -231,7 +227,7 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
             }
         }
         else if (row > movePosition.first && col < movePosition.second) { // DOWN RIGHT  //bug
-            for ( int i= 0; i < rowDis; ++i) {
+            for ( int i= 1; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row+i,col+i))) {
                     if (DEBUG)
                         cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
@@ -240,7 +236,7 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
             }
         }
         else if (row > movePosition.first && col < movePosition.second) { // DOWN LEFT
-            for ( int i= 0; i < rowDis; ++i) {
+            for ( int i= 1; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row+i,col-i))) {
                     if (DEBUG)
                         cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
@@ -249,7 +245,7 @@ bool Isolation::isValidMove(const char &player, pair<int, int> movePosition) con
             }
         }
         else if (row > movePosition.first && col < movePosition.second) { // TOP LEFT
-            for ( int i= 0; i < rowDis; ++i) {
+            for ( int i= 1; i < rowDis; ++i) {
                 if (isUsed(pair<int,int>(row-i,col-i))) {
                     if (DEBUG)
                         cout << "INVALID MOVE (either moving to used spot or hit used spot before the destination)" << endl;
@@ -417,7 +413,7 @@ ostream& operator<<(ostream &out, const Isolation &x) {
  * if true then return the node else continue to search with depth + 1
  */
 currentMovedNode Isolation::iterativeDeepSearch(){
-    int depth = 1;
+    int depth = 3;
     int alpha = -INF;
     int beta = INF;
     currentMovedNode node;

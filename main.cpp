@@ -11,12 +11,10 @@ int main() {
     bool play = true;
     string movee;
 
-
     cout << "Welcome!! Please enter who will play first [C]omputer or [O]pponent: " ;
     cin >> who;
     Isolation game = Isolation(who);
     cout << game;
-    cur = 'O';
 
     /**
      * So far the alphabeta works, it takes a while to get an answer because it uses iterative deepening
@@ -27,47 +25,40 @@ int main() {
      * TODO:
      *  Create menu to handle opponent's input and computer's getMove and apply that move.
      */
-    game.computeMove("G7");
-    cout << game;
-    game.opponentMove("H1");
-    cout << game;
+//     game.makeMove('X',7,0);
 //    cout << game;
-//    game.opponentMove("H2");
+//    game.makeMove('X',3,4);
 //    cout << game;
-//    while(play) {
-//        if (game.isComputerPlay()) {
-//            cout << " Make a move for C: ";
-//            cin >> movee;
-//            if (game.computeMove(movee)) {
-//                //cur = cur == 'X' ? 'O' : 'X';
-//            }
-//        } else {
-//            cout << " Make a move for O: ";
-//            cin >> movee;
-//            if (game.opponentMove(movee)) {
-//                //cur = cur == 'X' ? 'O' : 'X';
-//            }
-//        }
-//        cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
-//        cout << game << endl;
-//        if (game.isWin(cur)){
-//            cout << cur << " is the winner!" << endl;
-//            play = false;
-//        }
-//    }
+    while(play) {
+        if (game.isComputerPlay()) {
+            game.computerMove();
+        } else {
+            cout << " Make a move for O: ";
+            cin >> movee;
+            if (game.opponentMove(movee)) {
+                //cur = cur == 'X' ? 'O' : 'X';
+            }
+        }
+        cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
+        cout << game << endl;
+        if (game.isWin(cur)){
+            cout << cur << " is the winner!" << endl;
+            play = false;
+        }
+    }
 
-    pair<int, int> comp_move = game.getMove();
-    cout << "best move: " << comp_move.first << " , " << comp_move.second << "\n";
-
-//    game.opponentMove("A7");
-//    //game.makeMove('X',1,7);
-//    cout << game;
-//    game.opponentMove("A2");
-//    //game.makeMove('X',1,2);
-//    cout << game;
-//    game.opponentMove("A8");
-//    //game.makeMove('X',1,8);
-//    cout << game;
+//    pair<int, int> comp_move = game.getMove();
+//    cout << "best move: " << comp_move.first << " , " << comp_move.second << "\n";
+//
+////    game.opponentMove("A7");
+////    //game.makeMove('X',1,7);
+////    cout << game;
+////    game.opponentMove("A2");
+////    //game.makeMove('X',1,2);
+////    cout << game;
+////    game.opponentMove("A8");
+////    //game.makeMove('X',1,8);
+////    cout << game;
 
     return 0;
 }
