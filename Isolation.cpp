@@ -386,6 +386,10 @@ void Isolation::display() const {
         cout << endl;
         ++i;
     }
+    cout << endl;
+    if (!playerC.empty())
+        cout << "Computer’s move is: " << playerC[playerC.size() - 1];
+    cout << endl;
 }
 
 ostream& operator<<(ostream &out, const Isolation &x) {
