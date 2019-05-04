@@ -8,7 +8,7 @@ Isolation::Isolation() {
     initialize();
 }
 
-Isolation::Isolation(const char& whoFirst) { // need time limit
+Isolation::Isolation(const char& whoFirst, int timeLimit) { // need time limit
     initialize();
     if ( whoFirst == 'C') {
         computer = playing = 'X';
@@ -18,6 +18,7 @@ Isolation::Isolation(const char& whoFirst) { // need time limit
         computer = playing = 'O';
         opponent = waiting = 'X';
     }
+    this->timeLimit = timeLimit;
 
 }
 
@@ -39,7 +40,7 @@ void Isolation::initialize() {
 }
 
 void Isolation::computerMove() {
-    pair<int,int> move = getMove();
+    pair<int,int> move = getMove(computer);
     makeMove(computer, move.first, move.second);
     playerC.emplace_back(getcurrent(move));
 }
@@ -397,7 +398,7 @@ ostream& operator<<(ostream &out, const Isolation &x) {
  * It is an iterative deepening search, so it starts at depth 1 and check if the score is INF or -INF
  * if true then return the node else continue to search with depth + 1
  */
-currentMovedNode Isolation::iterativeDeepSearch(){
+currentMovedNode Isolation::iterativeDeepSearch( char play){
     int depth = 1;
     int alpha = -INF;
     int beta = INF;
@@ -405,8 +406,8 @@ currentMovedNode Isolation::iterativeDeepSearch(){
     currentMovedNode node;
     node.score = -INF;
     Board newBoard;
-    newBoard.maxPos = (computer == 'X' ? currentX : currentO);
-    newBoard.minPos = (computer == 'X' ? currentO : currentX);
+    newBoard.maxPos = (play == 'X' ? currentX : currentO);
+    newBoard.minPos = (play == 'X' ? currentO : currentX);
     startTime = chrono::high_resolution_clock::now();
     while(true){
         currentMovedNode newNode = alphaBetaSearch(newBoard, depth, alpha, beta);
@@ -454,7 +455,7 @@ currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &
         nextBoard.maxPos = move;
 
         if(depth == 1){
-            node.score = heuristic1(nextBoard);
+            node.score = heuristic2(nextBoard);
             node.movedPosition = move;
         }else{
             node = alphaBetaSearch(nextBoard, depth-1, alpha, beta, false);
@@ -504,7 +505,7 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
         nextBoard.minPos = move;
 
         if(depth == 1){
-            node.score = heuristic1(nextBoard);
+            node.score = heuristic2(nextBoard);
             node.movedPosition = move;
         }else{
             node = alphaBetaSearch(nextBoard, depth-1, alpha, beta, true);
@@ -533,8 +534,8 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
     return node;
 }
 
-pair<int, int> Isolation::getMove() {
-    currentMovedNode node = iterativeDeepSearch();
+pair<int, int> Isolation::getMove( char play) {
+    currentMovedNode node = iterativeDeepSearch(play);
     return node.movedPosition;
 }
 
@@ -600,5 +601,30 @@ void Isolation::printBoard(const char board[BOARD_SIZE][BOARD_SIZE]) {
 }
 
 bool Isolation::isTimeOver() {
-    return chrono::duration_cast<chrono::seconds>(chrono::high_resolution_clock::now() - startTime).count() > TIME_LIMIT;
+    return chrono::duration_cast<chrono::seconds>(chrono::high_resolution_clock::now() - startTime).count() > timeLimit;
+}
+
+void Isolation::twoAIPlay() {
+    char cur = 'X';
+    bool play = true;
+    int count = 0;
+
+    while(play) {
+        if( count++ % 2 == 0) {
+            pair<int,int> move = getMove('X');
+            makeMove('X', move.first, move.second);
+            playerC.emplace_back(getcurrent(move));
+        }
+        else {
+            pair<int,int> move = getMove('O');
+            makeMove('O', move.first, move.second);
+            playerO.emplace_back(getcurrent(move));
+        }
+        display();
+        cur = whoIsPlaying() == 'X'? 'O' : 'X';
+        if (isWin(cur)){
+            cout << cur << " is the winner!" << endl;
+            play = false;
+        }
+    }
 }

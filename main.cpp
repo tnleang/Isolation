@@ -10,10 +10,13 @@ int main() {
     char cur;
     bool play = true;
     string movee;
+    int time;
 
     cout << "Welcome!! Please enter who will play first [C]omputer or [O]pponent: " ;
     cin >> who;
-    Isolation game = Isolation(who);
+    cout << "how many second is time limit: " ;
+    cin >> time;
+    Isolation game = Isolation(who, time);
     cout << game;
 
     /**
@@ -25,21 +28,23 @@ int main() {
      * TODO:
      *  Create menu to handle opponent's input and computer's getMove and apply that move.
      */
-    while(play) {
-        if (game.isComputerPlay()) {
-            game.computerMove();
-        } else {
-            cout << " Make a move for O: ";
-            cin >> movee;
-            game.opponentMove(movee);
-        }
-        cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
-        cout << game << endl;
-        if (game.isWin(cur)){
-            cout << cur << " is the winner!" << endl;
-            play = false;
-        }
-    }
+
+    game.twoAIPlay();
+//    while(play) {
+//        if (game.isComputerPlay()) {
+//            game.computerMove();
+//        } else {
+//            cout << " Make a move for Opponent: ";
+//            cin >> movee;
+//            game.opponentMove(movee);
+//        }
+//        cur = game.whoIsPlaying() == 'X'? 'O' : 'X';
+//        cout << game << endl;
+//        if (game.isWin(cur)){
+//            cout << cur << " is the winner!" << endl;
+//            play = false;
+//        }
+//    }
 
     return 0;
 }

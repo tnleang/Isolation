@@ -52,7 +52,7 @@ struct currentMovedNode {
 class Isolation {
 public:
     Isolation();
-    Isolation(const char& whoFirst);
+    Isolation(const char& whoFirst, int timeLimit);
 
     void initialize();
     void display() const;
@@ -65,6 +65,7 @@ public:
     bool isWin(const char& player);
     inline bool isComputerPlay() const {return playing == computer;}
     char whoIsPlaying() const {return playing;}
+    void twoAIPlay();
 
 private:
     bool isValidMove(const char& player, pair<int,int> movePosition) const;
@@ -106,6 +107,7 @@ private:
     char computer;
     char opponent;
     chrono::high_resolution_clock::time_point startTime;
+    int timeLimit;
 
 };
 
