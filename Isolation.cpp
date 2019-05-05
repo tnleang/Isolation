@@ -66,71 +66,14 @@ bool Isolation::opponentMove(string movingPosition) {
         playerO.emplace_back(movingPosition);
         return true;
     }
-
-//    pair<int,int> move = getMove();
-//    makeMove(opponent, move.first, move.second);
-//    playerO.emplace_back(getcurrent(move));
     return false;
 }
-
-//pair<int,int> Isolation::alphaBetaSreach(char board[BOARD_SIZE][BOARD_SIZE]){
-//    /*
-//     * input: state -- current board in the game
-//     * value <- maxValue(board, -inf, inf)
-//     * return the action in Successors(state) with value
-//     */
-//    int alpha = numeric_limits<int>::min();
-//    int beta = numeric_limits<int>::max();
-//}
-//
-//int Isolation::maxValue (char board[BOARD_SIZE][BOARD_SIZE], int& alpha, int& beta) {
-//    /*
-//     * input: state, current state in game
-//     *          alpha, the value of the best alternative for MAX along the path to state
-//     *          beta, the value of the best alternative for MIN along the path to state
-//     *  if Terminal-test(state) then return Utility(state)
-//     *  value <- -inf
-//     *  for s in succerssors(state) do
-//     *      value <- MAX(value, min-value(s,alpha, beta))
-//     *      if value >= beta then return value
-//     *      alpha <- MAX(alpha, value)
-//     *  return value
-//     */
-//
-//}
-//
-//int Isolation::minValue(char board[BOARD_SIZE][BOARD_SIZE], int &alpha, int &beta) {
-//    /*
-//     * input: state, current state in game
-//     *          alpha, the value of the best alternative for MAX along the path to state
-//     *          beta, the value of the best alternative for MIN along the path to state
-//     *  if Terminal-test(state) then return Utility(state)
-//     *  value <- -inf
-//     *  for s in succerssors(state) do
-//     *      value <- MIN(value, max-value(s,alpha, beta))
-//     *      if value <= alpha then return value
-//     *      alpha <- MIN(beta, value)
-//     *  return value
-//     */
-//}
 
 string Isolation::getcurrent(pair<int,int> move) const {
     string position = "";
     position.append(1,char(move.first + 65));
     position.append(1,char(move.second + 49));
     return position;
-}
-
-int Isolation::utility(const char &player) {
-    /*
-     *  return 1 if player win
-     *         -1 if player not win
-     *         0 otherwise (inconclusive)
-     */
-    if (getAllPossibleMoves(this->board, (playing == 'X' ? currentX : currentO)).empty())
-        return player == playing ? -1 : 1;
-    else
-        return 0;
 }
 
 bool Isolation::makeMove(const char& player, int row, int col) {   // assume it is valid
@@ -362,21 +305,19 @@ void Isolation::display() const {
     int i = 0, j;
 
     cout << "  1 2 3 4 5 6 7 8      Computer vs. Opponent" << endl;
-    while ( i < BOARD_SIZE || i < playerC.size() || i < playerO.size() ) {
-        if ( i <  BOARD_SIZE) {
+    while (i < BOARD_SIZE || i < playerC.size() || i < playerO.size()) {
+        if (i < BOARD_SIZE) {
             cout << char(i + 65) << " ";
-            for ( j = 0; j < BOARD_SIZE; ++j) {
+            for (j = 0; j < BOARD_SIZE; ++j) {
                 cout << board[i][j] << " ";
             }
-        }
-        else {
+        } else {
             cout << "                  ";
         }
 
         if (i < playerC.size()) {
             cout << "         " << playerC[i] << "       ";
-        }
-        else {
+        } else {
             cout << "                     ";
         }
 
@@ -387,9 +328,12 @@ void Isolation::display() const {
         ++i;
     }
     cout << endl;
-    if (!playerC.empty())
+    if (!playerC.empty() && playing == opponent) {
         cout << "Computer\'s move is: " << playerC[playerC.size() - 1];
-    cout << endl;
+    }else if(!playerO.empty()){
+        cout << "Opponent\'s move is: " << playerO[playerO.size() - 1];
+    }
+    cout << "\n";
 }
 
 ostream& operator<<(ostream &out, const Isolation &x) {
@@ -438,11 +382,9 @@ currentMovedNode Isolation::alphaBetaSearch(const Board &board, const int &depth
 }
 
 currentMovedNode Isolation::maxValue(const Board &board, const int &depth, int &alpha, int &beta){
-//    cout << "maxValue depth: " << depth << "\n";
     vector<pair<int, int>> legalMoves = getAllPossibleMoves(tempBoard, board.maxPos);
     // No legal moves means terminal state
     if(legalMoves.empty()){
-//        cout << "No moves left for max" << "\n";
         currentMovedNode node;
         node.score = -INF;
         node.movedPosition = pair<int, int>(-1, -1);

@@ -75,7 +75,6 @@ private:
     inline bool outOfBound(pair<int,int> position) const;
     inline bool isUsed(pair<int,int> position) const;
     inline bool isUsed(pair<int, int> position, const char board[BOARD_SIZE][BOARD_SIZE]) const;
-    int utility(const char& player);
     void getAllLegalMovesVertHoriz(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool upOrLeft, bool horizontal);
     void getAllLegalMovesDiagonally(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirRight);
     vector<pair<int,int>> getAllPossibleMoves(const char board[BOARD_SIZE][BOARD_SIZE], const pair<int, int> &player_pos);
