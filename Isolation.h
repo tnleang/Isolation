@@ -80,8 +80,8 @@ private:
     void getAllLegalMovesDiagonally(vector<pair<int, int>> &list, const char board[BOARD_SIZE][BOARD_SIZE], int player_y, int player_x, bool dirRight);
     vector<pair<int,int>> getAllPossibleMoves(const char board[BOARD_SIZE][BOARD_SIZE], const pair<int, int> &player_pos);
 
-    pair<int, int> getMove();
-    currentMovedNode iterativeDeepSearch();
+    pair<int, int> getMove(char play);
+    currentMovedNode iterativeDeepSearch(char play);
     currentMovedNode alphaBetaSearch(const Board &board, const int &depth, int &alpha, int &beta, bool max_player = true);
     currentMovedNode maxValue(const Board &board, const int &depth, int &alpha, int &beta);
     currentMovedNode minValue(const Board &board, const int &depth, int &alpha, int &beta);

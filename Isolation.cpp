@@ -388,7 +388,7 @@ void Isolation::display() const {
     }
     cout << endl;
     if (!playerC.empty())
-        cout << "Computer’s move is: " << playerC[playerC.size() - 1];
+        cout << "Computer\'s move is: " << playerC[playerC.size() - 1];
     cout << endl;
 }
 
@@ -402,7 +402,7 @@ ostream& operator<<(ostream &out, const Isolation &x) {
  * It is an iterative deepening search, so it starts at depth 1 and check if the score is INF or -INF
  * if true then return the node else continue to search with depth + 1
  */
-currentMovedNode Isolation::iterativeDeepSearch( char play){
+currentMovedNode Isolation::iterativeDeepSearch(char play){
     int depth = 1;
     int alpha = -INF;
     int beta = INF;
@@ -538,7 +538,7 @@ currentMovedNode Isolation::minValue(const Board &board, const int &depth, int &
     return node;
 }
 
-pair<int, int> Isolation::getMove( char play) {
+pair<int, int> Isolation::getMove(char play) {
     currentMovedNode node = iterativeDeepSearch(play);
     return node.movedPosition;
 }
